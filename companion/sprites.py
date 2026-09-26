@@ -20,6 +20,10 @@ def canonical(root, catalog, species, view, shiny=False):
         # The ROM applies the species palette to both tile sets. Some upstream
         # back PNGs retain obsolete embedded colors, so use the actual .pal.
         palette_path=folder / ('shiny.pal' if shiny else 'normal.pal')
+        parent=folder
+        while not palette_path.exists() and parent!=Path(root)/'graphics/pokemon':
+            parent=parent.parent
+            palette_path=parent / ('shiny.pal' if shiny else 'normal.pal')
         if palette_path.exists():
             colors = [list(map(int, line.split())) for line in palette_path.read_text().splitlines()[3:] if len(line.split()) == 3]
             image.putpalette([c for color in colors for c in color])

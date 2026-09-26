@@ -146,3 +146,19 @@ Anatomical renderer version 10 corrects short-ear sizing, supplies a low quadrup
 Twenty-three tests pass, including the C timing test, reference-mask/front-preservation checks, emulator-cache reporting, update checksum/address validation, and save/previous-build preservation. Three real GPU pairs were reviewed: the playtester's level-8 Bulbasaur and the existing level-34 turtle/level-80 Gengar examples. Generation takes approximately 45–60 seconds per pair, with no extra model download or API fee. Evidence: `build/back-sprite-investigation/comparison.png`, `provenance.json`, and `build-check.json`.
 
 The revised companion was restarted. The real connected Lua bridge reported the new level-8 asset `3491638b` in its accepted ROM cache; the dashboard now distinguishes that from a merely completed generation. This confirms delivery into the running emulator, not a direct comparison of battle VRAM. The native UI diagnostic input could not be completed, and no read-only render probe was installed. The staged ROM timing fix still needs a post-restart battle playtest.
+
+## Windows portable alpha (September 25)
+
+The standalone PyInstaller application bundles Python, Pillow and Tk. The release contains the IPS patch, bridge, catalog, trait data and ROM offsets for reference extraction, with component license notices. It excludes original/patched ROMs, personal saves, databases, model weights and extracted reference art.
+
+All 41 tests passed. Six packaging tests cover malformed IPS/LZ input, all 411 reference entries in both views and palettes, resumable downloads/hash rejection, archive traversal, device selection, exclusive data locks and consistent SQLite WAL backups. The extracted reference pixels match the developer assets exactly.
+
+A fresh ZIP extraction ran setup with PATH restricted to Windows/System32 and Python environment overrides removed. It downloaded and verified mGBA 0.10.5 and the pinned stable-diffusion.cpp Vulkan runtime. The DreamShaper model was imported from an existing file and verified against its pinned SHA-256; a fresh 2 GB model network transfer was not repeated. Both Vulkan GPUs and the CPU were detected, and NVIDIA RTX 4070 Laptop GPU was selected automatically.
+
+The frozen executable generated a real canonical-conditioned front and front-guided back pair in 61.19 seconds. The graphical Play button launched the frozen companion and packaged mGBA; the ROM booted and loading the provided Lua script produced the launcher's Connected status. Closing mGBA terminated the owned companion, confirmed by process inspection and a closed local port. This was a packaging/boot/connection check, not a new in-battle visual assertion or full campaign playtest.
+
+Re-extraction into a different application directory followed by setup preserved the test save hash and a SQLite history sentinel. The final graphical Back up save button copied the same save and retained the sentinel in a consistent backup. The final launcher was visually checked after compacting its spacing; all controls and the data path are visible at its default size. The user's development save/history were not used or modified.
+
+Final ZIP: 26,686,778 bytes, SHA-256 `ef5996fb536b2df47b904b0cb1e32c538e5517ac034047da2d62159fad57a935`. Local evidence is under `build/portable-smoke/` (setup, AI, verification, update and backup results); evidence containing local paths/runtime data is excluded from the public package.
+
+This unsigned alpha has only been exercised on the current Windows 11 computer. Removing developer tools from PATH does not establish compatibility on a clean second PC. Other GPUs, Windows 10 and CPU-only generation remain unvalidated. mGBA requires manually loading the Lua bridge once per session. Persistent data defaults to LocalAppData; a user-selected location supports keeping it alongside the application.

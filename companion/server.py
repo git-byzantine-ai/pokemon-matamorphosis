@@ -195,7 +195,7 @@ class Application:
                     except (OSError, ValueError, KeyError):
                         pass
                 return None
-            return {'protocol':6,'essence_multiplier':3,'provider': self.generator.settings['provider'], 'counts': counts,
+            return {'protocol':6,'essence_multiplier':3,'installation':self.config.get('installation'),'provider': self.generator.settings['provider'], 'counts': counts,
                     'conditioning': self.generator.settings['conditioning'],
                     'trait_profiles': len(self.generator.traits.by_id),
                     'connected': bool(self.last_connection and time.time() - self.last_connection < 10),

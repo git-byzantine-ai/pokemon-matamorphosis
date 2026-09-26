@@ -2,6 +2,14 @@
 
 An experimental FireRed ROM patch, mGBA Lua bridge, and free local Stable Diffusion companion. Metamorphosis is a player-selected action that spends defeated-Pokémon essence and grants EVs. Level-ups no longer generate artwork.
 
+## Windows portable download
+
+Download the **Windows x64 ZIP** from [GitHub Releases](https://github.com/git-byzantine-ai/pokemon-matamorphosis/releases), extract the entire folder, and open `Metamorphosis.exe`. Setup verifies your original English FireRed v1.0 ROM, applies the patch locally, downloads the emulator/runtime/model with checksum checks, detects your graphics devices, and tests real AI generation. Python, Git, Codex and the ROM build toolchain are not required on the player's computer.
+
+Allow at least 4 GB free disk space and roughly 2.2 GB of first-run downloads. A Vulkan GPU is recommended; this alpha has been tested on an RTX 4070 Laptop GPU. At each launch, load the Lua bridge using the path provided by the launcher. Save/history/artwork live together in a separate persistent data folder, so replacing the application ZIP does not erase progress.
+
+See the [player guide](packaging/PLAYER_GUIDE.txt) for setup, saves, controls and troubleshooting, and [portable build instructions](packaging/BUILD.md) for release maintainers. The ZIP contains a patch, not the original ROM or model weights. Existing development-checkout saves are not automatically imported into the portable app.
+
 ## Install the triple-EV essence update
 
 1. Save through the **in-game Save menu**, then close mGBA.

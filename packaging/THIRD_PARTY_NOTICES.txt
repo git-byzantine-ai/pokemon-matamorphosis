@@ -1,0 +1,24 @@
+Pokemon Metamorphosis - third-party notices
+
+Original project source:
+https://github.com/git-byzantine-ai/pokemon-matamorphosis
+
+The packaged Python launcher includes CPython, Tcl/Tk and Pillow. Their licenses
+are included under LICENSES and/or _internal. PyInstaller's bootloader is
+distributed under its GPL license with the stated exception for bundled apps;
+its license and exception are included. Python packaging does not change the
+ownership of the application or game assets.
+
+Dependencies downloaded by setup, not included in the application ZIP:
+- mGBA 0.10.5, Mozilla Public License 2.0. Unmodified official binary archive;
+  retain the included license files. Source: https://github.com/mgba-emu/mgba/tree/0.10.5
+- stable-diffusion.cpp commit 28b454b, MIT license, and bundled dependencies.
+  Keep the archive's license notices. Source: https://github.com/leejet/stable-diffusion.cpp
+- DreamShaper 8 by Lykon, CreativeML Open RAIL-M model license and model terms.
+  Model/license: https://huggingface.co/Lykon/DreamShaper/tree/228d79cb20811466f5c5710aa91f05dabd0b8a14
+
+ROM patch built against pret/pokefirered revision:
+c75f352304d529f6ba92d4f74b9cf8b5c3810788
+https://github.com/pret/pokefirered
+Game code, characters and artwork retain their original ownership. No original
+ROM or standalone reference sprite collection is included in this ZIP.

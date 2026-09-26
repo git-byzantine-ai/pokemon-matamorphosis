@@ -1,0 +1,33 @@
+POKEMON METAMORPHOSIS - WINDOWS PORTABLE ALPHA
+
+GET STARTED
+1. Extract the entire ZIP to a folder. Keep Metamorphosis.exe and _internal together.
+2. Double-click Metamorphosis.exe. No Python, Git, Codex, or administrator installation is needed.
+3. Choose your unmodified English FireRed v1.0 ROM (16 MiB). Setup verifies it and creates a patched copy. The original file is never changed.
+4. Click Set up / Repair. Downloads total about 2.2 GB. Allow at least 4 GB of free space. Interrupted downloads can be resumed. You may optionally reuse a verified DreamShaper 8 model.
+5. Select the graphics device and click Test AI. This generates an actual front/back pair. Play becomes available after it succeeds.
+6. Click Play. Keep the launcher open.
+7. In mGBA, choose Tools > Scripting > File > Load script. Click Copy bridge path in the launcher and paste that path into the file dialog. Do this once per emulator session. The launcher will show Connected.
+
+PLAY
+Choose Start > Pokemon > your Pokemon > Metamorphosis. USE is currently applied essence; OWN includes both applied and banked essence. Left/Right changes one, L/R changes ten. Start then A confirms; B cancels. Removing essence refunds it.
+Each essence grants 3x its native EV yield, up to 255 per stat / 510 total. Original sprites remain below 100 applied EVs. At 102 or more, qualifying builds generate custom artwork after confirmation. A moving bar shows work in progress; you may continue playing while the AI runs.
+Keyboard defaults: arrows move, X=A, Z=B, Enter=Start, Backspace=Select, A=L, S=R. See mGBA Tools > Settings > Keyboard to adjust controls.
+
+SAVES AND UPDATES
+By default data lives in %LOCALAPPDATA%\PokemonMetamorphosis, separately from the application ZIP. The launcher shows the exact location. Change data folder selects another data directory; it does not move existing data. For a fully movable setup, choose a folder on your removable drive and move portable-settings.json with the application.
+Back up the ENTIRE data folder while mGBA and the launcher are closed, including game/*.sav, history.sqlite3, and sprites/. The Back up save button creates a consistent save/history snapshot; existing sprite files are retained separately.
+To update: save in-game, close mGBA and the launcher, extract the new application ZIP into a new folder, choose the same data folder, and run Set up / Repair if requested. Use Continue from your normal save. RAM save states from an older ROM version are not supported. Never overwrite the data folder with an empty one.
+Do not run two copies against the same data folder. To transfer to another PC, copy the entire data folder, select it in the launcher and run Set up / Repair to refresh paths and graphics devices.
+This alpha does not automatically import saves from a development checkout. Keep existing saves and their matching history/sprites together; do not copy just a .sav into a different history.
+
+REQUIREMENTS AND TROUBLESHOOTING
+Windows 10/11, x64, internet for initial downloads. A Vulkan-capable GPU is recommended. Only one NVIDIA RTX 4070 Laptop GPU has been tested; other GPUs need validation. CPU generation is available but can be very slow. No paid API or cloud image uploads are used.
+If Test AI fails, update your GPU driver or choose a different listed device and retry. Open the data folder for setup.log, companion.log and checks/sprites/*/generation-*.log.
+If gameplay waits after an event, check the launcher connection and load the Lua bridge. Do not load it twice in one emulator session.
+If the model download fails, run setup again to resume. A checksum failure discards the partial download and requests a fresh copy. Downloads are verified before use.
+The ZIP and EXE are unsigned experimental software. Verify the ZIP SHA-256 against the accompanying checksum file. Do not disable Windows security settings.
+
+SOURCE AND THIRD-PARTY COMPONENTS
+https://github.com/git-byzantine-ai/pokemon-matamorphosis
+See THIRD_PARTY_NOTICES.txt and LICENSES. The distribution contains a ROM patch, not a playable ROM. Sprite references are extracted locally from the player's verified ROM.
