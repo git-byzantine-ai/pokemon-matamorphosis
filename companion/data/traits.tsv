@@ -1,0 +1,388 @@
+# Hand-authored visual design vocabulary for the FireRed species catalog.
+# SYMBOL | body plan | primary color | anatomical features | optional specific body description
+BULBASAUR|quadruped|blue green|back: a closed plant bulb rooted into the upper back;ears: short pointed ears;markings: dark angular skin spots|a squat broad-headed amphibian with a continuous rounded torso and four short sturdy legs
+IVYSAUR|quadruped|blue green|back: a pink flower bud surrounded by broad back leaves;ears: pointed ears;markings: dark angular skin spots|a stocky broad-headed amphibian with a low rounded torso and four sturdy clawed legs
+VENUSAUR|quadruped|blue green|back: a thick trunk supporting a broad pink flower and leaves;skin: knobbly skin;face: a broad heavy jaw|a heavy low-slung amphibian with a broad flat head and four thick legs
+CHARMANDER|biped|orange|tail: a long tapering tail with a small flame at its tip;belly: a cream belly;face: a short rounded muzzle|a small upright lizard with a rounded head, short arms, sturdy hind legs and a long balancing tail
+CHARMELEON|biped|red orange|tail: a tapering flame-tipped tail;head: a swept-back horn;hands: sharp curved claws|an upright lean lizard with a pointed muzzle, clawed arms and strong hind legs
+CHARIZARD|biped|orange|wings: paired batlike wings with teal membranes;tail: a long flame-tipped tail;head: two backward-pointing horns|an upright dragon with a long curved neck, one tapered head, short clawed arms and two sturdy hind legs
+SQUIRTLE|biped|light blue|back: a rounded brown turtle shell;belly: a cream segmented belly plate;tail: a thick curled tail|a compact upright turtle with a round head, a broad torso and four short limbs
+WARTORTLE|biped|blue|ears: swept featherlike ears;tail: a fluffy curled tail;back: a brown turtle shell|a stocky upright turtle with a rounded head, short clawed arms and two sturdy legs
+BLASTOISE|biped|blue|back: a heavy brown shell with two short shoulder cannons;face: a broad blunt muzzle;belly: cream segmented armor|a heavy upright turtle with a broad continuous torso, short powerful arms and two thick legs
+CATERPIE|crawler|green|head: a red forked antenna;markings: yellow ring markings along the sides;tail: a tapered tail
+METAPOD|cocoon|green|skin: angular folded shell plates;face: narrow recessed eyes
+BUTTERFREE|insect|purple|wings: one broad pair of pale wings with dark borders;head: two slender antennae;eyes: large red compound eyes
+WEEDLE|crawler|tan|head: a small pointed forehead horn;tail: a pointed tail stinger;feet: small rounded pink feet
+KAKUNA|cocoon|yellow|skin: overlapping angular shell plates;face: dark triangular eyes
+BEEDRILL|insect|yellow|hands: tapered lance-shaped forelimbs;wings: narrow translucent insect wings;markings: black abdominal bands
+PIDGEY|bird|tan|wings: short feathered wings;face: a dark eye stripe;belly: a cream breast
+PIDGEOTTO|bird|brown|head: a swept red feather crest;tail: red and yellow tail feathers;hands: hooked talons
+PIDGEOT|bird|tan|head: a long swept red and gold crest;wings: broad powerful feathered wings;tail: red tail feathers
+RATTATA|quadruped|purple|face: prominent incisors and long whiskers;tail: a thin curled tail;belly: a cream underside
+RATICATE|quadruped|brown|face: broad cheeks with large incisors;ears: round ears;tail: a long bare tail
+SPEAROW|bird|brown|head: a spiky crown;face: a short pointed beak;wings: reddish feathered wings
+FEAROW|bird|brown|neck: a long slender neck;face: a long pointed beak;wings: long broad feathered wings
+EKANS|serpent|purple|markings: a yellow neck band;tail: a small segmented tail rattle;eyes: narrow slit pupils
+ARBOK|serpent|purple|neck: a broad flared neck hood;markings: bold symmetrical hood markings;face: small curved fangs
+PIKACHU|biped|yellow|ears: long flexible rabbitlike ears with black tips;markings: small red cheek patches;tail: a flat angular lightning-shaped tail
+RAICHU|biped|orange|ears: curled pointed ears with dark edges;tail: a long thin tail ending in a lightning-shaped blade;markings: yellow cheek patches
+SANDSHREW|biped|ochre|skin: small interlocking armor scales;hands: broad digging claws;belly: a pale belly
+SANDSLASH|biped|ochre|back: a swept cluster of long brown dorsal spines;hands: long digging claws;face: a narrow muzzle
+NIDORAN_F|quadruped|blue|ears: broad rounded ears;head: a small forehead horn;markings: dark body patches
+NIDORINA|biped|blue|ears: broad notched ears;back: short dorsal spines;markings: darker skin patches
+NIDOQUEEN|biped|blue|belly: broad cream belly armor;tail: a thick balancing tail;head: a short forehead horn
+NIDORAN_M|quadruped|purple|ears: large angular ears;head: a pointed forehead horn;back: small dorsal spikes
+NIDORINO|quadruped|purple|head: a long ridged forehead horn;ears: large pointed ears;back: a line of dorsal spikes
+NIDOKING|biped|purple|head: a long forehead horn;tail: a thick spined tail;belly: cream segmented belly armor
+CLEFAIRY|biped|pink|ears: dark-tipped pointed ears;head: a curled forelock;wings: tiny rounded back wings
+CLEFABLE|biped|pink|ears: long dark-tipped ears;wings: small angular back wings;tail: a tightly curled tail
+VULPIX|quadruped|rust red|tail: a fan of six curled tails;head: a curled forelock;belly: a cream chest
+NINETALES|quadruped|cream|tail: a flowing fan of nine tails;head: a swept mane;eyes: narrow red eyes
+JIGGLYPUFF|round|pink|eyes: large round eyes;ears: small pointed ears;head: a curled forehead tuft
+WIGGLYTUFF|biped|pink|ears: long upright ears with dark interiors;belly: a white belly;eyes: large oval eyes
+ZUBAT|winged|blue|wings: paired bat wings with purple membranes;face: an eyeless face with two small fangs;ears: pointed ears
+GOLBAT|winged|blue|face: a broad open mouth with four fangs;wings: broad bat wings with purple membranes;feet: tiny feet
+ODDISH|plant|blue|head: a crown of broad green leaves;feet: two small rootlike feet;eyes: small red eyes
+GLOOM|plant|blue|head: a heavy red flower with rounded lobes;face: drooping eyelids;feet: short rootlike feet
+VILEPLUME|plant|blue|head: a broad red five-petaled flower;markings: pale circular petal spots;feet: short rootlike feet
+PARAS|crawler|orange|back: two small red mushrooms rooted into the back;hands: curved front pincers;eyes: round pale eyes
+PARASECT|crawler|orange|back: a broad red mushroom cap;markings: pale mushroom spots;hands: heavy front pincers
+VENONAT|biped|purple|skin: dense shaggy fur;eyes: large red compound eyes;head: two thin pale antennae
+VENOMOTH|insect|lavender|wings: broad pale moth wings;head: short forked antennae;eyes: large compound eyes
+DIGLETT|burrower|brown|face: a small oval pink nose;skin: smooth rounded skin
+DUGTRIO|burrower|brown|face: an oval pink nose;skin: smooth rounded skin;head: a tall rounded head profile
+MEOWTH|biped|cream|head: a small oval gold forehead plate;face: long whiskers;tail: a curled tail with a brown tip
+PERSIAN|quadruped|cream|head: a small red forehead gem;face: a sleek muzzle with whiskers;tail: a long curled tail
+PSYDUCK|biped|yellow|face: a broad flat cream bill;head: three short dark tufts;feet: webbed feet
+GOLDUCK|biped|blue|head: a pointed crest and red forehead gem;hands: webbed hands;face: a flat bill
+MANKEY|biped|cream|face: a round piglike nose;skin: shaggy fur;tail: a long curled tail
+PRIMEAPE|biped|cream|skin: spiky shaggy fur;face: a round pink nose;hands: broad dark hands
+GROWLITHE|quadruped|orange|markings: dark tigerlike stripes;neck: a thick cream ruff;tail: a curled fluffy tail
+ARCANINE|quadruped|orange|neck: a broad flowing cream mane;markings: dark stripes;tail: a large curled cream tail
+POLIWAG|biped|blue|belly: a pale belly with a dark spiral;tail: a long flat translucent tail;face: small round lips
+POLIWHIRL|biped|blue|belly: a white belly with a dark spiral;eyes: raised round eyes;hands: rounded pale hands
+POLIWRATH|biped|blue|belly: a white belly with a dark spiral;hands: thick rounded forearms;eyes: heavy brow ridges
+ABRA|biped|gold|ears: tall pointed ears;eyes: closed narrow eyes;tail: a long curved tail
+KADABRA|biped|gold|face: long thin whiskers;head: a small forehead star marking;tail: a thick curved tail
+ALAKAZAM|biped|gold|face: long swept moustache-like whiskers;head: angular pointed head crests;belly: dark segmented torso plates
+MACHOP|biped|gray blue|head: three short ridges along the crown;hands: muscular forearms;tail: a short thick tail
+MACHOKE|biped|purple|hands: powerful muscular forearms;head: three crown ridges;markings: dark arm stripes
+MACHAMP|biped|gray blue|hands: broad muscular hands;head: three crown ridges;face: a wide blunt muzzle
+BELLSPROUT|plant|yellow|face: a flared bell-shaped mouth;hands: paired green leaves;feet: thin rootlike feet
+WEEPINBELL|plant|yellow|face: a wide pink-rimmed bell mouth;hands: paired side leaves;head: a short curved stem
+VICTREEBEL|plant|yellow|face: a broad pink-rimmed pitcher mouth;head: a broad overhanging leaf;tail: a long curling vine
+TENTACOOL|aquatic|blue|head: two rounded red head plates;limbs: two slender curling tentacles;skin: smooth translucent skin
+TENTACRUEL|aquatic|blue|head: a broad blue dome with red side plates;limbs: long hanging tentacles;face: sharp narrow eyes
+GEODUDE|round|gray|skin: rough stone plates;hands: thick rocky forearms;face: heavy angular brows
+GRAVELER|biped|gray|skin: rounded boulder armor;back: irregular rock ridges;hands: heavy stone hands
+GOLEM|biped|brown|back: a spherical shell of interlocking stone plates;head: a small reptilian head;hands: broad clawed hands
+PONYTA|quadruped|cream|neck: a flowing flame-shaped mane;tail: a flame-shaped tail;feet: dark hooves
+RAPIDASH|quadruped|cream|head: a long tapered forehead horn;neck: a flowing flame-shaped mane;feet: dark hooves
+SLOWPOKE|quadruped|pink|face: a broad pale muzzle;ears: small curled ears;tail: a long thick pale-tipped tail
+SLOWBRO|biped|pink|tail: a heavy spiral shell encasing the tail tip;belly: a pale segmented belly;ears: small curled ears
+MAGNEMITE|floating|silver|eyes: one large central eye;head: a short screw-shaped crest;limbs: paired horseshoe-shaped side appendages
+MAGNETON|floating|silver|skin: polished round metal plates;limbs: paired horseshoe-shaped appendages;head: short screw-shaped studs
+FARFETCHD|bird|brown|face: a short flat beak;head: a dark V-shaped brow marking;wings: short feathered wings
+DODUO|bird|brown|neck: long slender neck proportions;skin: shaggy feathers;feet: long running legs
+DODRIO|bird|brown|head: pointed dark feather tufts;tail: a fan of red tail feathers;feet: long running legs
+SEEL|aquatic|white|head: a small forehead horn;face: a rounded muzzle with small tusks;tail: a broad forked flipper tail
+DEWGONG|aquatic|white|head: a small forehead horn;tail: a broad flowing flipper tail;skin: smooth pale skin
+GRIMER|amorphous|purple|skin: soft flowing sludge folds;hands: thick rounded arms;eyes: large round eyes
+MUK|amorphous|purple|skin: thick layered sludge folds;hands: a broad heavy arm profile;face: a wide mouth
+SHELLDER|shell|purple|skin: a ridged hinged shell;face: a small face recessed inside the shell;back: pointed shell edges
+CLOYSTER|shell|purple|skin: a thick angular shell;back: long tapered shell spines;face: narrow eyes in a dark central face
+GASTLY|floating|purple|skin: a soft smoky outline;face: a wide grin with small fangs;eyes: large pale eyes
+HAUNTER|floating|purple|head: pointed swept side spines;hands: long clawed hands;face: a broad toothy grin
+GENGAR|biped|purple|face: a broad mischievous toothy grin;back: short pointed dorsal spines;eyes: narrow red eyes|a stocky round-bodied mischievous monster, broad head merging directly into its torso without a neck, short stubby arms and legs, soft rounded proportions, smooth skin, no muzzle
+ONIX|serpent|gray|skin: linked rough boulder segments;head: a tapered forehead horn;face: a broad angular jaw
+DROWZEE|biped|yellow|face: a short curved trunk;belly: a dark brown lower-body color block;hands: rounded fingers
+HYPNO|biped|yellow|face: a long curved nose;neck: a fluffy white ruff;ears: pointed ears
+KRABBY|crawler|orange|hands: rounded front pincers;eyes: raised stalk eyes;belly: a cream underside
+KINGLER|crawler|orange|hands: broad serrated pincers;head: a spiky crown;feet: angular walking legs
+VOLTORB|round|red|markings: a clean pale lower hemisphere;eyes: narrow angular eyes;skin: smooth glossy skin
+ELECTRODE|round|white|markings: a clean red lower hemisphere;face: a broad grin;skin: smooth glossy skin
+EXEGGCUTE|round|pink|skin: an eggshell-like surface;head: a shallow cracked-shell crown;eyes: heavy narrow eyes
+EXEGGUTOR|plant|brown|head: a broad crown of palm leaves;skin: horizontal trunk ridges;feet: thick rootlike feet
+CUBONE|biped|brown|head: a pale skull-shaped head plate;tail: a short pointed tail;belly: a cream belly
+MAROWAK|biped|brown|head: a smooth pale skull-shaped helmet;tail: a thick pointed tail;belly: a cream belly
+HITMONLEE|biped|brown|feet: long springlike segmented legs;hands: short rounded forearms;eyes: dark angular eye surrounds
+HITMONCHAN|biped|tan|hands: rounded red boxing-glove-shaped hands;head: a spiky crown;belly: a purple chest plate
+LICKITUNG|biped|pink|face: a broad mouth with a long tongue;belly: cream curved belly markings;tail: a thick curled tail
+KOFFING|floating|purple|skin: rounded porous skin nodules;markings: pale geometric belly markings;face: a wide grin
+WEEZING|floating|purple|skin: rough porous nodules;head: raised rounded vents;face: heavy drooping brows
+RHYHORN|quadruped|gray|skin: angular interlocking armor plates;head: a tapered nose horn;back: a ridged back
+RHYDON|biped|gray|head: a tapered drill-shaped nose horn;tail: a thick ridged tail;belly: segmented pale armor
+CHANSEY|round|pink|ears: three short side frills;belly: a small rounded belly pouch;feet: short rounded feet
+TANGELA|round|blue|skin: intertwined flexible vine strands;eyes: a dark face with two round eyes;feet: short red feet
+KANGASKHAN|biped|brown|belly: a broad cream belly with a pouch;head: angular side ears;tail: a thick balancing tail
+HORSEA|aquatic|blue|face: a tubular snout;head: small pointed head fins;tail: a tightly curled tail
+SEADRA|aquatic|blue|back: jagged dorsal fins;face: a long tubular snout;tail: a curled tail
+GOLDEEN|fish|white|head: a tapered forehead horn;fins: flowing orange-edged fins;markings: broad orange patches
+SEAKING|fish|orange|head: a tapered forehead horn;fins: broad pale fins with dark spots;markings: irregular dark spots
+STARYU|star|brown|belly: a central red gem in a gold ring;limbs: five tapered radial arms;skin: firm ridged skin
+STARMIE|star|purple|belly: a central red gem in a gold frame;limbs: pointed layered radial arms;skin: smooth firm plates
+MR_MIME|biped|cream|hands: long splayed fingers with round tips;markings: round pink cheek and joint patches;head: dark swept side crests
+SCYTHER|insect|green|hands: long curved blade-shaped forearms;wings: narrow pale insect wings;head: a pointed crown
+JYNX|biped|purple|head: long pale flowing hair;face: broad pale lips;belly: red and gold torso panels
+ELECTABUZZ|biped|yellow|markings: black angular stripes;head: two short rounded antennae;tail: a long striped tail
+MAGMAR|biped|orange|head: rounded flame-shaped head crests;tail: a flame-tipped tail;markings: yellow flame-shaped torso markings
+PINSIR|biped|brown|head: paired curved toothed horns;skin: ridged chitin plates;hands: small claws
+TAUROS|quadruped|brown|head: two curved pale horns;neck: a dark shaggy mane;tail: thin dark-tufted tails
+MAGIKARP|fish|orange|face: long thin barbels;fins: a yellow crownlike dorsal fin;skin: large overlapping scales
+GYARADOS|serpent|blue|head: a three-pointed crown;face: a broad jaw with long barbels;belly: pale segmented belly plates
+LAPRAS|aquatic|blue|back: a gray domed shell with rounded knobs;neck: a long curved neck;ears: curled side fins
+DITTO|amorphous|lavender|skin: a smooth soft outline;face: tiny dot eyes and a simple mouth
+EEVEE|quadruped|brown|ears: long upright ears;neck: a fluffy cream ruff;tail: a bushy cream-tipped tail
+VAPOREON|quadruped|blue|neck: a pale frilled collar;tail: a long split-finned tail;back: a narrow dorsal ridge
+JOLTEON|quadruped|yellow|skin: sharply pointed fur tufts;neck: a spiky white ruff;ears: tall pointed ears
+FLAREON|quadruped|orange|neck: a thick flowing cream ruff;tail: a bushy cream tail;ears: tall pointed ears
+PORYGON|biped|pink|skin: angular low-poly plates;face: a long blue wedge-shaped snout;feet: broad blue wedge feet
+OMANYTE|shell|blue|back: a pale coiled spiral shell;limbs: short rounded tentacles;eyes: raised round eyes
+OMASTAR|shell|blue|back: a pale spiral shell with short spines;limbs: curled tentacles;face: a small four-part beak
+KABUTO|crawler|brown|back: a smooth domed shell;eyes: small red eyes beneath the shell;feet: small pointed legs
+KABUTOPS|biped|brown|head: a broad crescent-shaped head shield;hands: long curved scythe forearms;skin: segmented chitin armor
+AERODACTYL|winged|gray purple|wings: broad leathery wings;face: a long toothed jaw;tail: a long arrow-tipped tail
+SNORLAX|biped|dark teal|belly: a broad cream belly;face: a cream face with small fangs;feet: short broad clawed feet
+ARTICUNO|bird|ice blue|head: a three-pointed crest;tail: long flowing ribbonlike tail feathers;wings: broad layered wings
+ZAPDOS|bird|yellow|wings: jagged pointed wings with dark undersides;head: a spiky crest;face: a long narrow beak
+MOLTRES|bird|orange|wings: flame-shaped feathered wings;head: a flame-shaped crest;tail: a flowing flame-shaped tail
+DRATINI|serpent|blue|ears: pale finlike side frills;belly: a pale underside;face: a small rounded muzzle
+DRAGONAIR|serpent|blue|ears: small featherlike side fins;neck: a smooth blue throat orb;tail: small blue tail orbs
+DRAGONITE|biped|orange|wings: small teal-membraned wings;head: two thin antennae;belly: a pale segmented belly
+MEWTWO|biped|lavender|tail: a long thick purple tail;head: two short blunt head crests;hands: three rounded fingers
+MEW|biped|pink|tail: a very long thin tail with an oval tip;face: a short feline muzzle;feet: oversized rounded feet
+CHIKORITA|quadruped|pale green|head: a single broad leaf;neck: a ring of small green buds;eyes: large red eyes
+BAYLEEF|quadruped|yellow green|head: a curved leaf with a notch;neck: a collar of curled green leaves;tail: a short pointed tail
+MEGANIUM|quadruped|green|neck: a broad pink flower collar;head: two curled antennae;tail: a long tapering tail
+CYNDAQUIL|quadruped|cream|back: a short crest of flame-shaped spines;face: a long narrow snout;markings: a dark blue back
+QUILAVA|quadruped|cream|head: a short flame-shaped crest;back: a flame-shaped rump tuft;markings: a dark blue back
+TYPHLOSION|biped|cream|neck: a broad flame-shaped collar;markings: a dark blue back;face: a short pointed muzzle
+TOTODILE|biped|blue|face: a broad crocodilian jaw;back: red triangular dorsal ridges;belly: a pale chest patch
+CROCONAW|biped|blue|back: a red pointed crest and dorsal ridges;belly: a cream belly with dark triangular markings;face: a broad toothed jaw
+FERALIGATR|biped|blue|back: a tall red dorsal crest;hands: broad clawed forearms;face: a heavy toothed jaw
+SENTRET|biped|brown|tail: a broad striped tail;belly: a pale circular belly marking;ears: large rounded ears
+FURRET|quadruped|cream|markings: broad brown body bands;tail: a long thick tapering tail;ears: short rounded ears
+HOOTHOOT|bird|brown|eyes: large red eyes within dark angular brow markings;head: two pointed brow tufts;feet: small talons
+NOCTOWL|bird|brown|head: tall V-shaped brow tufts;markings: dark triangular chest markings;wings: broad rounded wings
+LEDYBA|insect|red|back: a smooth red wing case with dark spots;head: two short antennae;hands: small pale hands
+LEDIAN|insect|red|eyes: large blue eyes;back: spotted red wing cases;hands: rounded pale forelimbs
+SPINARAK|crawler|green|markings: dark abdominal markings;head: a short pale horn;feet: yellow legs with dark bands
+ARIADOS|crawler|red|feet: long yellow legs with purple bands;back: two long tapered dorsal appendages;head: a short horn
+CROBAT|winged|purple|wings: broad angular bat wings with blue membranes;ears: long pointed ears;face: small triangular fangs
+CHINCHOU|fish|blue|head: two flexible antennae ending in yellow light organs;eyes: yellow eyes with cross-shaped pupils;fins: broad side fins
+LANTURN|fish|blue|head: a curved antenna ending in a yellow light organ;markings: a yellow face mask;tail: a broad split tail
+PICHU|biped|pale yellow|ears: large angular ears with dark tips;markings: pink cheek patches;tail: a small dark angular tail
+CLEFFA|biped|pink|ears: small brown pointed ears;head: a curled forelock;feet: tiny rounded feet
+IGGLYBUFF|round|pink|head: three short rounded forehead tufts;markings: a small forehead curl;eyes: large red eyes
+TOGEPI|biped|cream|belly: a rounded pale shell with red and blue triangular markings;head: short pointed head lobes;feet: small rounded feet
+TOGETIC|biped|white|wings: small rounded back wings;markings: red and blue triangular markings;neck: a long slender neck
+NATU|bird|green|head: a short red crest;wings: yellow and red side wings;eyes: large outlined eyes
+XATU|bird|green|wings: broad patterned wings;markings: geometric red yellow and dark chest markings;head: long red crest feathers
+MAREEP|quadruped|cream|skin: thick curled wool;head: dark-striped curved ears;tail: a striped tail with a round orange tip
+FLAAFFY|biped|pink|neck: a thick white wool collar;ears: black-striped ears;tail: a striped tail with a blue orb
+AMPHAROS|biped|yellow|neck: dark neck bands;tail: a dark-banded tail with a red orb;head: short dark head knobs
+BELLOSSOM|plant|green|head: two small red flowers;belly: a layered skirt of broad leaves;markings: red cheek circles
+MARILL|biped|blue|belly: a white rounded belly;ears: round ears;tail: a thin zigzag tail ending in a blue ball
+AZUMARILL|biped|blue|ears: long rabbitlike ears;belly: a white wavy belly edge with pale side spots;tail: a thin tail with a blue ball
+SUDOWOODO|biped|brown|skin: rough barklike skin;hands: three green round fingertips;head: a short forked crest
+POLITOED|biped|green|head: a thin curled antenna;belly: a yellow belly with a green spiral;markings: pink cheek patches
+HOPPIP|plant|pink|head: two long serrated leaves;ears: pointed ears;feet: tiny rounded feet
+SKIPLOOM|plant|green|head: a yellow five-petaled flower;ears: long pointed ears;feet: small rounded feet
+JUMPLUFF|plant|blue|head: a pale spherical seed puff;hands: paired pale seed puffs;eyes: small red eyes
+AIPOM|biped|purple|tail: a long tail with a rounded hand-shaped tip;face: a cream face mask;head: a short forehead tuft
+SUNKERN|plant|yellow|head: two small green leaves;markings: dark vertical stripes;skin: smooth seedlike skin
+SUNFLORA|plant|green|head: a round face framed by yellow petals;hands: broad side leaves;feet: rootlike feet
+YANMA|insect|red|wings: long narrow translucent wings;eyes: very large green eyes;tail: a long segmented tail
+WOOPER|aquatic|pale blue|head: branched pink side gills;markings: dark belly bars;tail: a broad flat tail
+QUAGSIRE|biped|blue|back: a low purple dorsal ridge;tail: a broad flat tail;face: a broad simple mouth
+ESPEON|quadruped|lavender|head: a small red forehead gem;ears: large pointed ears with cheek tufts;tail: a long forked tail
+UMBREON|quadruped|black|markings: clean yellow rings on the forehead and limbs;ears: long pointed ears;eyes: narrow red eyes
+MURKROW|bird|black|head: a tall swept hatlike crest;tail: a broom-shaped tail;face: a curved yellow beak
+SLOWKING|biped|pink|head: a pointed spiral crown with a red gem;neck: a red and cream frilled collar;belly: a pale belly
+MISDREAVUS|floating|teal|head: long flowing pink-tipped head locks;neck: a row of red beadlike nodules;skin: a wispy lower outline
+UNOWN|floating|black|eyes: one large central pale eye;limbs: thin geometric radial strokes;skin: smooth dark skin
+WOBBUFFET|biped|blue|tail: a flat dark tail with pale eye-shaped markings;face: tightly closed eyes;feet: a broad rounded base
+GIRAFARIG|quadruped|yellow|neck: a long slender neck;markings: dark spots and a brown hindquarter color block;head: short rounded horns
+PINECO|cocoon|teal|skin: overlapping pointed conelike scales;eyes: narrow red eyes
+FORRETRESS|shell|purple|back: a broad ridged shell;limbs: short red tubular protrusions;eyes: a narrow dark eye band
+DUNSPARCE|serpent|yellow|wings: tiny pale side wings;tail: a short drill-shaped tail;markings: blue horizontal stripes
+GLIGAR|winged|purple|wings: broad membranes between the forelimbs and body;hands: rounded pincers;tail: a curled stinger tail
+STEELIX|serpent|silver|skin: interlocking angular metal segments;head: a broad heavy jaw;back: short lateral spikes
+SNUBBULL|biped|pink|face: a square muzzle with small lower fangs;ears: broad floppy ears;markings: blue body patches
+GRANBULL|biped|purple|face: a heavy lower jaw with two large fangs;neck: a dark collarlike band;hands: broad paws
+QWILFISH|fish|teal|skin: short pointed body spines;belly: a cream underside;tail: a flat fan tail with dark markings
+SCIZOR|insect|red|hands: large rounded pincers with dark eye-shaped markings;wings: small translucent back wings;skin: smooth metal-like armor
+SHUCKLE|crawler|yellow|back: a rounded red shell with pale circular openings;neck: a long flexible neck;limbs: soft tubular limbs
+HERACROSS|insect|blue|head: a long fork-tipped forehead horn;skin: smooth rounded chitin armor;hands: broad clawed forearms
+SNEASEL|biped|dark teal|ears: long pointed ears with a red feather crest;hands: long pale claws;tail: a fan of red feathers
+TEDDIURSA|biped|brown|head: a pale crescent forehead marking;ears: round ears;face: a cream muzzle
+URSARING|biped|brown|belly: a broad cream ring marking;hands: broad paws with pale claws;neck: a shaggy shoulder ruff
+SLUGMA|amorphous|red|skin: flowing molten-looking folds;head: two soft hornlike eye stalks;eyes: large yellow eyes
+MAGCARGO|amorphous|red|back: a rough dark spiral shell;skin: smooth molten-looking skin;eyes: short raised eye stalks
+SWINUB|quadruped|brown|skin: long shaggy fur with dark stripes;face: a small pink nose;feet: tiny concealed feet
+PILOSWINE|quadruped|brown|skin: a dense shaggy coat;face: two curved pale tusks;ears: short floppy ears
+CORSOLA|aquatic|pink|back: blunt branching coral projections;belly: a pale underside;feet: short rounded feet
+REMORAID|fish|blue gray|face: a short tubular mouth;markings: dark side stripes;fins: small pointed fins
+OCTILLERY|aquatic|red|limbs: broad curling tentacles with round suction pads;face: a round tubular mouth;head: rounded yellow head nodules
+DELIBIRD|bird|red|neck: a thick white feather ruff;tail: a large curled pale tail;face: a short yellow beak
+MANTINE|aquatic|blue|wings: broad rounded raylike fins;head: two short curled frontal fins;belly: a pale underside
+SKARMORY|bird|silver|skin: angular metal-like feather plates;wings: long blade-shaped wings with red inner panels;head: a pointed swept crest
+HOUNDOUR|quadruped|black|back: pale riblike back ridges;face: a tan muzzle;head: a pale forehead plate
+HOUNDOOM|quadruped|black|head: long curved pale horns;neck: pale segmented neck ridges;tail: a long arrow-tipped tail
+KINGDRA|aquatic|blue|face: a long narrow tubular snout;head: branched head fins;tail: a thick curled tail
+PHANPY|quadruped|light blue|face: a short rounded trunk;ears: broad floppy ears with red bands;feet: round sturdy feet
+DONPHAN|quadruped|gray|back: a thick dark ridged armor band;face: a short trunk and pale tusks;ears: broad side ears
+PORYGON2|biped|red|skin: smooth rounded surfaces;face: a broad blue bill;feet: rounded blue feet
+STANTLER|quadruped|brown|head: paired branching antlers with dark central openings;face: a broad dark nose;tail: a rounded cream tail
+SMEARGLE|biped|cream|head: a soft cap-shaped head crest;tail: a long brush-tipped tail;ears: broad floppy ears
+TYROGUE|biped|purple|head: three short crown ridges;hands: small rounded fists;feet: broad brown feet
+HITMONTOP|biped|brown|head: a short pointed crown horn;feet: long feet with pale tips;tail: a slender pointed tail
+SMOOCHUM|biped|pink|head: a short pale bob of hair;face: large rounded lips;belly: a cream chest
+ELEKID|biped|yellow|head: two blunt dark-tipped head prongs;markings: dark angular torso markings;hands: broad short forearms
+MAGBY|biped|red|head: rounded crown nodules;face: a broad yellow beaklike muzzle;belly: a yellow belly
+MILTANK|quadruped|pink|head: two short pale horns;markings: dark head and body patches;tail: a thin tail with a dark round tip
+BLISSEY|round|pink|neck: soft curled head tufts;belly: a pale frilled lower belly with a pouch;hands: short rounded arms
+RAIKOU|quadruped|yellow|markings: jagged black stripes;neck: a flowing purple cloudlike mane;tail: a long angular blue tail
+ENTEI|quadruped|brown|face: angular red and gold facial plates;back: flowing pale dorsal plumes;feet: broad pale paws
+SUICUNE|quadruped|blue|head: a tall angular blue crest;neck: a flowing purple mane;tail: paired pale ribbonlike streamers
+LARVITAR|biped|green|head: a pointed forehead horn;belly: a red diamond belly marking;eyes: dark angular eye markings
+PUPITAR|cocoon|blue gray|skin: an angular pointed shell;head: short crown spikes;eyes: small red eyes
+TYRANITAR|biped|green|back: long angular dorsal spikes;belly: a dark blue diamond belly plate;tail: a thick armored tail
+LUGIA|winged|white|wings: long broad wings ending in fingerlike tips;belly: a dark blue belly panel;back: short blue dorsal plates
+HO_OH|bird|red|head: a swept gold crest;wings: broad green and gold edged wings;tail: long golden fan-shaped tail feathers
+CELEBI|biped|pale green|head: a pointed leaf-shaped crown;wings: small translucent wings;eyes: large blue eyes
+TREECKO|biped|green|tail: a broad dark green leaf-shaped tail;eyes: large yellow eyes;hands: rounded adhesive fingertips
+GROVYLE|biped|green|head: a long swept leaf crest;hands: long forearm leaves;belly: a red throat and belly panel
+SCEPTILE|biped|green|tail: a broad branching leafy tail;back: round yellow back nodules;hands: paired pointed forearm leaves
+TORCHIC|bird|orange|head: three short feather tufts;wings: short yellow side feathers;feet: small three-toed feet
+COMBUSKEN|biped|orange|head: a three-pointed crest;feet: strong feathered legs with dark claws;hands: short feathered forearms
+BLAZIKEN|biped|red|head: long swept cream head plumes;feet: long powerful feathered legs;hands: short wrist tufts
+MUDKIP|quadruped|blue|head: a broad upright head fin;face: orange branched cheek gills;tail: a broad pale tail fin
+MARSHTOMP|biped|blue|head: a broad upright head fin;face: orange cheek gills;tail: a broad dark tail fin
+SWAMPERT|quadruped|blue|head: two broad swept head fins;hands: thick powerful forelimbs;face: orange branched cheek gills
+POOCHYENA|quadruped|gray|face: a dark muzzle with small fangs;back: a shaggy dark dorsal ridge;eyes: red eyes
+MIGHTYENA|quadruped|gray|neck: a long shaggy dark mane;tail: a bushy dark tail;eyes: narrow red eyes
+ZIGZAGOON|quadruped|brown|skin: alternating cream and brown zigzag fur bands;tail: a short spiky tail;face: a dark eye mask
+LINOONE|quadruped|cream|markings: long brown stripes running along the body;face: a pointed muzzle;tail: a long tapered tail
+WURMPLE|crawler|red|back: short pale dorsal spikes;head: a small pointed forehead horn;feet: pale rounded feet
+SILCOON|cocoon|white|skin: softly layered silk strands;eyes: a small red eye opening;back: short silk anchor points
+BEAUTIFLY|insect|black|wings: broad yellow wings with red and blue panels;face: a thin curled proboscis;head: two fine antennae
+CASCOON|cocoon|purple|skin: softly layered silk strands;eyes: a small red eye opening;back: short silk anchor points
+DUSTOX|insect|purple|wings: broad green wings with dark ring markings;head: two yellow antennae;eyes: large yellow eyes
+LOTAD|aquatic|blue|back: a broad flat green lily pad;face: a small yellow bill;feet: short rounded legs
+LOMBRE|biped|green|head: a broad notched lily pad;face: a flat red bill;hands: long rounded fingers
+LUDICOLO|biped|yellow|head: a broad green lily-pad crown;skin: shaggy fur with brown zigzag bands;face: a flat orange bill
+SEEDOT|plant|brown|head: a ridged gray acorn cap;feet: short rounded feet;eyes: a dark eye mask
+NUZLEAF|biped|brown|head: a single long green leaf;face: a long pointed nose;markings: dark facial markings
+SHIFTRY|biped|brown|head: a long flowing pale mane;hands: broad three-leaf fans;feet: long raised wooden-looking feet
+TAILLOW|bird|blue|markings: a red throat and pale belly;tail: a short forked tail;wings: narrow pointed wings
+SWELLOW|bird|blue|markings: a red throat and chest;tail: a long deeply forked tail;wings: swept pointed wings
+WINGULL|bird|white|wings: long narrow wings with blue bands;face: a long yellow beak;tail: short blue tail tips
+PELIPPER|bird|white|face: a broad yellow bill with a large throat pouch;wings: broad blue-tipped wings;feet: blue webbed feet
+RALTS|biped|white|head: a smooth green bowl-shaped crown with red side fins;limbs: slender tapered limbs;skin: smooth pale skin
+KIRLIA|biped|white|head: a green swept head covering with red side fins;belly: a short flared white lower torso;feet: slender green legs
+GARDEVOIR|biped|white|head: a swept green head crest;belly: a long flared white lower torso;neck: a small red chest fin
+SURSKIT|insect|blue|feet: very long thin yellow legs;head: a small yellow head cap;eyes: large dark eyes
+MASQUERAIN|insect|blue|head: broad orange antennae with eye-shaped markings;wings: four small translucent wings;face: a pale central face
+SHROOMISH|plant|tan|head: a rounded mushroomlike crown;markings: irregular green spots;feet: short green feet
+BRELOOM|biped|green|head: a broad mushroom-shaped cap;tail: a long tail ending in rounded seed nodules;hands: small red-tipped claws
+SLAKOTH|quadruped|brown|face: a pale face with heavy eyelids;back: two dark dorsal stripes;hands: long curved claws
+VIGOROTH|biped|white|head: a short red crest;hands: long dark claws;ears: small rounded ears
+SLAKING|biped|brown|neck: a thick cream ruff;face: a broad pink muzzle;hands: large rounded forearms
+NINCADA|insect|cream|hands: broad brown digging forelimbs;wings: small green back panels;eyes: large green eyes
+NINJASK|insect|yellow|wings: broad translucent insect wings;markings: dark body bands;head: a pointed head shield
+SHEDINJA|insect|brown|back: a split hollow shell;head: a small floating ring-shaped crest;wings: short pale frayed wing panels
+WHISMUR|biped|pink|ears: long floppy ears with yellow tips;face: a small round open mouth;eyes: tiny cross-shaped eyes
+LOUDRED|biped|purple|ears: large round speakerlike ears;face: a wide square mouth with pale lips;feet: broad yellow-tipped feet
+EXPLOUD|biped|purple|head: multiple short tubular head vents;face: a broad square mouth;tail: paired tubular tail extensions
+MAKUHITA|biped|yellow|head: a short tied-looking head tuft;hands: broad dark hands;markings: round red cheek patches
+HARIYAMA|biped|tan|hands: very broad orange palms;belly: dark segmented lower-body panels;feet: broad orange feet
+AZURILL|round|blue|tail: a thin zigzag tail ending in a large blue ball;markings: pale cheek spots;ears: round ears
+NOSEPASS|biped|blue gray|face: a large angular red nose;skin: rough geometric stone plates;hands: short blocklike arms
+SKITTY|quadruped|pink|ears: large pointed ears;face: a pale face with narrow eyes;tail: an upright rounded tail with small tips
+DELCATTY|quadruped|cream|neck: a purple collar with round nodules;ears: broad pointed ears with purple tips;tail: a slender purple-tipped tail
+SABLEYE|biped|purple|eyes: large pale faceted gem eyes;hands: pointed claws;belly: a small red chest gem
+MAWILE|biped|yellow|head: a long dark jaw-shaped crest curving behind the head;hands: short dark forearms;feet: broad yellow feet
+ARON|quadruped|gray|head: a rounded pale metal head plate;back: dark oval armor openings;eyes: blue eyes
+LAIRON|quadruped|gray|back: ridged pale metal armor plates;head: a broad angular head plate;feet: short sturdy legs
+AGGRON|biped|gray|head: a pale helmetlike plate with two long horns;tail: a thick armored tail;belly: pale segmented belly armor
+MEDITITE|biped|blue|head: a pale pointed head cap;ears: large rounded ears;hands: slender forearms
+MEDICHAM|biped|cream|head: a red crest with three round tips;feet: broad red lower-leg panels;face: small rounded lips
+ELECTRIKE|quadruped|green|head: a pointed yellow-edged crest;markings: angular yellow side markings;tail: a short pointed tail
+MANECTRIC|quadruped|blue|head: a tall angular yellow mane;feet: yellow pointed leg tufts;tail: a narrow pointed tail
+PLUSLE|biped|cream|ears: long red-tipped ears;markings: red cheek patches with pale plus markings;tail: a small red cross-shaped tail
+MINUN|biped|cream|ears: long blue-tipped ears;markings: blue cheek patches with pale bars;tail: a small blue flat tail
+VOLBEAT|insect|black|belly: a yellow glowing abdominal tip;neck: a red collar;head: two curled antennae
+ILLUMISE|insect|purple|head: a curled purple crest;neck: a small yellow collar;wings: short pale translucent wings
+ROSELIA|biped|green|hands: rounded red and blue flower-shaped forelimbs;head: three pointed leaf crests;belly: overlapping leaf panels
+GULPIN|amorphous|green|head: a single yellow featherlike crest;face: pursed rounded lips;back: a dark diamond marking
+SWALOT|amorphous|purple|face: long thin whiskers and rounded lips;markings: dark diamond markings;hands: small rounded arms
+CARVANHA|fish|blue|belly: a red lower body;face: a broad jaw with triangular teeth;fins: pointed yellow fins
+SHARPEDO|fish|blue|head: a small gold star marking;face: a broad pointed toothed jaw;fins: triangular fins with pale edges
+WAILMER|aquatic|blue|belly: a broad cream ridged underside;fins: small rounded side flippers;face: a broad simple mouth
+WAILORD|aquatic|blue|belly: a long cream ridged underside;fins: small side flippers;back: pale oval back markings
+NUMEL|quadruped|yellow|back: a single rounded green-topped hump;feet: short sturdy legs;face: a broad rounded muzzle
+CAMERUPT|quadruped|orange|back: paired rocky volcano-shaped humps;markings: blue ring markings on the flanks;face: a broad muzzle
+TORKOAL|quadruped|orange|back: a dark domed shell with red recessed openings;neck: a short wrinkled neck;feet: thick rounded feet
+SPOINK|round|gray|tail: a tightly coiled spring-shaped tail;head: a round pink head orb;face: a round piglike nose
+GRUMPIG|biped|purple|head: round dark forehead orbs;tail: a thin curled tail;face: a round piglike nose
+SPINDA|biped|cream|eyes: spiral-shaped eye markings;markings: irregular red spots;ears: long rounded ears
+TRAPINCH|quadruped|orange|head: a very broad rounded head;face: a wide toothed jaw;feet: short pointed feet
+VIBRAVA|insect|green|wings: paired green diamond-shaped wings;tail: a slender tail ending in small diamond fins;eyes: large angular eyes
+FLYGON|biped|green|wings: broad diamond-shaped wings with red borders;eyes: large red-rimmed eyes;tail: a long striped tail with diamond fins
+CACNEA|plant|green|skin: short conical cactus spines;head: a small yellow flower;markings: dark diamond markings
+CACTURNE|biped|green|head: a tall pointed crown;hands: angular spiny forearms;markings: dark diamond chest markings
+SWABLU|bird|blue|wings: rounded fluffy white wings;head: two long thin head feathers;face: a small pale beak
+ALTARIA|bird|blue|wings: broad fluffy white cloudlike wings;neck: a long blue neck;head: two long swept feathers
+ZANGOOSE|biped|white|markings: angular red scars across the face and chest;hands: long dark claws;tail: a broad fluffy tail
+SEVIPER|serpent|black|markings: yellow hexagonal patches and purple bands;face: long red fangs;tail: a flattened red-edged blade tail
+LUNATONE|floating|cream|skin: rough moonlike stone;head: a crescent-shaped outline;eyes: recessed red eyes
+SOLROCK|floating|orange|skin: rough stone plates;back: short yellow radial spikes;eyes: narrow red eyes
+BARBOACH|fish|gray|face: blue curved barbels;markings: a dark wavy side stripe;fins: small blue fins
+WHISCASH|fish|blue|face: long curved yellow barbels;head: a yellow W-shaped forehead marking;belly: a pale belly
+CORPHISH|crawler|red|hands: broad rounded pincers;head: three short pointed head crests;belly: a pale underside
+CRAWDAUNT|crawler|red|head: a yellow star-shaped crest;hands: large serrated pincers;belly: blue and pale torso bands
+BALTOY|floating|tan|limbs: flat tapered side arms;markings: narrow red geometric bands;feet: a pointed lower tip
+CLAYDOL|floating|black|head: a broad rounded head with pink ring markings;limbs: short pale-ended cylindrical arms;markings: pale curved torso patterns
+LILEEP|plant|purple|head: broad pink petallike tentacles around the face;belly: a segmented cup-shaped lower body;eyes: small yellow eyes
+CRADILY|plant|green|neck: a long curved neck;head: short pink head tentacles;markings: yellow ring markings
+ANORITH|crawler|gray|hands: broad segmented front claws;back: pale lateral fins;eyes: raised side eyes
+ARMALDO|biped|blue gray|back: layered armored ridges and pale side fins;hands: long curved claws;head: raised eye stalks
+FEEBAS|fish|tan|skin: irregular rough scales;markings: dark blotches;fins: ragged blue fins
+MILOTIC|serpent|cream|head: long red ribbonlike head fins;tail: a broad blue and red patterned tail fan;eyes: narrow red eyes
+CASTFORM|floating|pale gray|head: a rounded teardrop-shaped head;belly: a soft lobed lower outline;eyes: large dark eyes
+KECLEON|biped|green|tail: a tightly curled tail;markings: a red zigzag belly stripe;head: a short ridged crown
+SHUPPET|floating|purple|head: a long tapered forehead horn;skin: a soft draped lower outline;eyes: large outlined eyes
+BANETTE|biped|gray|face: a long gold zipperlike mouth line;head: pointed swept head crests;tail: a short gold tail
+DUSKULL|floating|gray|face: a pale skull-shaped face plate;eyes: a small red eye glow;skin: a wispy draped lower outline
+DUSCLOPS|biped|gray|eyes: one large central eye;skin: layered bandagelike folds;hands: broad pale hands
+TROPIUS|quadruped|green|wings: broad paired leaf wings;neck: a long curved neck with yellow throat pods;head: a broad leaf crest
+CHIMECHO|floating|pale blue|head: a small yellow suction-cup-shaped crown;tail: a long flat ribbon tail;markings: broad red patches
+ABSOL|quadruped|white|head: a long curved dark side horn;tail: a dark curved blade tail;neck: a thick pale ruff
+WYNAUT|biped|blue|ears: long drooping side lobes;head: a short rounded crest;tail: a flat dark tail with pale eye markings
+SNORUNT|biped|black|back: a triangular yellow-edged cloaklike body covering;eyes: round blue eyes;face: a broad mouth
+GLALIE|floating|white|skin: angular ice armor plates with dark openings;head: two short dark horns;eyes: blue eyes
+SPHEAL|round|blue|belly: a cream underside;markings: pale circular spots;face: small pale tusks
+SEALEO|aquatic|blue|face: broad pale whiskers;neck: a thick cream neck band;fins: short broad flippers
+WALREIN|aquatic|blue|face: long pale tusks;neck: a thick white mane;fins: broad powerful flippers
+CLAMPERL|shell|blue|back: a broad ridged blue shell;head: a smooth pink central orb;belly: pale curled tissue folds
+HUNTAIL|serpent|blue|markings: orange-ringed pale spots;face: a broad toothed jaw;tail: a flat fish-shaped tail fin
+GOREBYSS|serpent|pink|face: a long tapered tubular snout;fins: small purple fins;belly: pale shell-shaped chest markings
+RELICANTH|fish|brown|skin: rough interlocking stone-like scales;markings: a small red flank spot;fins: broad lobed fins
+LUVDISC|fish|pink|head: a flattened heart-shaped profile;face: small rounded lips;markings: pale cheek patches
+BAGON|biped|blue|head: a broad ridged gray head plate;belly: a pale segmented belly;hands: short rounded forearms
+SHELGON|quadruped|white|back: a broad segmented dome shell;face: a small dark facial opening;feet: four short gray legs
+SALAMENCE|quadruped|blue|wings: broad red crescent-shaped wings;head: short swept side fins;belly: a pale segmented belly
+BELDUM|floating|blue|eyes: one large red eye;skin: smooth metal-like armor;limbs: short clawlike rear projections
+METANG|floating|blue|hands: broad metal forearms with pale claws;face: a pointed pale nose plate;skin: rounded metal armor
+METAGROSS|quadruped|blue|face: a broad pale X-shaped facial plate;feet: thick angular legs with pale claws;skin: smooth metal armor
+REGIROCK|biped|brown|skin: irregular interlocking stone blocks;markings: small orange dot markings;hands: massive blocklike forearms
+REGICE|biped|ice blue|skin: angular translucent ice facets;markings: small yellow dot markings;back: short pointed ice projections
+REGISTEEL|biped|silver|skin: smooth rounded metal plates;markings: small red dot markings on a dark face panel;hands: broad dark forearms
+LATIAS|winged|red|wings: swept triangular wings;belly: a pale body with a blue triangular marking;ears: long swept head fins
+LATIOS|winged|blue|wings: swept triangular wings;belly: a pale body with a red triangular marking;ears: long swept head fins
+KYOGRE|aquatic|blue|fins: broad rounded flippers with pale tips;markings: thin red geometric lines;belly: a pale underside
+GROUDON|biped|red|skin: broad angular armor plates with dark seams;back: short pale lateral spikes;hands: thick claws
+RAYQUAZA|serpent|green|head: long swept paired head fins;markings: yellow ring and line markings;back: red-edged lateral fins
+JIRACHI|biped|cream|head: a broad yellow star-shaped crown with teal ribbon tips;belly: a small teal belly marking;hands: slender pale arms
+DEOXYS|biped|orange|head: an angular teal-edged head crest;hands: long tapering tentaclelike forearms;belly: a small purple chest gem

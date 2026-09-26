@@ -1,0 +1,1275 @@
+--- a/src/main.c
++++ b/src/main.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "link.h"
+ #include "link_rfu.h"
+@@ -178,6 +179,12 @@
+     for (;;)
+     {
+         ReadKeys();
++        if (!Meta_Tick())
++        {
++            MapMusicMain();
++            WaitForVBlank();
++            continue;
++        }
+ 
+         if (gSoftResetDisabled == FALSE
+          && (gMain.heldKeysRaw & A_BUTTON)
+--- a/src/battle_script_commands.c
++++ b/src/battle_script_commands.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "item.h"
+ #include "util.h"
+@@ -3136,6 +3137,7 @@
+         }
+         else
+         {
++            Meta_Defeat(gBattlerFainted, sentIn);
+             gBattleScripting.getexpState++;
+             gBattleStruct->givenExpMons |= gBitTable[gBattlerPartyIndexes[gBattlerFainted]];
+         }
+@@ -3307,6 +3309,7 @@
+                 PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gActiveBattler, gBattleStruct->expGetterMonId);
+                 PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff2, 3, GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL));
+ 
++                Meta_Record(&gPlayerParty[gBattleStruct->expGetterMonId], 2, 0, 0);
+                 BattleScriptPushCursor();
+                 gLeveledUpInBattle |= gBitTable[gBattleStruct->expGetterMonId];
+                 gBattlescriptCurrInstr = BattleScript_LevelUp;
+--- a/src/party_menu.c
++++ b/src/party_menu.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "battle.h"
+ #include "battle_anim.h"
+@@ -128,7 +129,7 @@
+     u32 spriteIdCancelPokeball:7;
+     u32 messageId:14;
+     u8 windowId[3];
+-    u8 actions[8];
++    u8 actions[9];
+     u8 numActions;
+     u16 palBuffer[BG_PLTT_SIZE / sizeof(u16)];
+     s16 data[16];
+@@ -148,6 +149,9 @@
+ static void BlitBitmapToPartyWindow_LeftColumn(u8 windowId, u8 x, u8 y, u8 width, u8 height, bool8 hideHP);
+ static void BlitBitmapToPartyWindow_RightColumn(u8 windowId, u8 x, u8 y, u8 width, u8 height, bool8 hideHP);
+ static void CursorCB_Summary(u8 taskId);
++static void CursorCB_Metamorphosis(u8 taskId);
++static void CB2_OpenMetamorphosis(void);
++static void CB2_ReturnFromMetamorphosis(void);
+ static void CursorCB_Switch(u8 taskId);
+ static void CursorCB_Cancel1(u8 taskId);
+ static void CursorCB_Item(u8 taskId);
+@@ -2538,7 +2542,7 @@
+     switch (windowType)
+     {
+     case SELECTWINDOW_ACTIONS:
+-        window = SetWindowTemplateFields(2, 19, 19 - (sPartyMenuInternal->numActions * 2), 10, sPartyMenuInternal->numActions * 2, 14, 0x2BF);
++        window = SetWindowTemplateFields(2, 16, 19 - (sPartyMenuInternal->numActions * 2), 13, sPartyMenuInternal->numActions * 2, 14, 0x2BF);
+         break;
+     case SELECTWINDOW_ITEM:
+         window = sItemGiveTakeWindowTemplate;
+@@ -2966,6 +2970,7 @@
+ 
+     sPartyMenuInternal->numActions = 0;
+     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, CURSOR_OPTION_SUMMARY);
++    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, CURSOR_OPTION_METAMORPHOSIS);
+     // Add field moves to action list
+     for (i = 0; i < MAX_MON_MOVES; ++i)
+     {
+@@ -5049,6 +5054,7 @@
+ 
+     GetMonLevelUpWindowStats(mon, arrayPtr);
+     ExecuteTableBasedItemEffect_(gPartyMenu.slotId, gSpecialVar_ItemId, 0);
++    Meta_Record(mon, 2, 0, 1);
+     GetMonLevelUpWindowStats(mon, &ptr->data[NUM_STATS]);
+     gPartyMenuUseExitCallback = TRUE;
+     ItemUse_SetQuestLogEvent(QL_EVENT_USED_ITEM, mon, gSpecialVar_ItemId, 0xFFFF);
+@@ -6340,3 +6346,20 @@
+         ScriptContext_Enable();
+     }
+ }
++
++static void CursorCB_Metamorphosis(u8 taskId)
++{
++    PlaySE(SE_SELECT);
++    sPartyMenuInternal->exitCallback = CB2_OpenMetamorphosis;
++    Task_ClosePartyMenu(taskId);
++}
++static void CB2_OpenMetamorphosis(void)
++{
++    Meta_OpenEssenceMenu(gPartyMenu.slotId, CB2_ReturnFromMetamorphosis);
++}
++static void CB2_ReturnFromMetamorphosis(void)
++{
++    gPaletteFade.bufferTransferDisabled = TRUE;
++    InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE,
++                 PARTY_MSG_DO_WHAT_WITH_MON, Task_TryCreateSelectionWindow, gPartyMenu.exitCallback);
++}
+--- a/src/daycare.c
++++ b/src/daycare.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "data.h"
+ #include "battle.h"
+@@ -486,6 +487,7 @@
+         // Add the mon's gained daycare experience level by level until it can't level up anymore.
+         if (TryIncrementMonLevel(mon))
+         {
++            Meta_Record(mon, 2, 0, 2);
+             // Teach the mon new moves it learned while in the daycare.
+             firstMove = TRUE;
+             while ((learnedMove = MonTryLearningNewMove(mon, firstMove)) != 0)
+--- a/src/battle_gfx_sfx_util.c
++++ b/src/battle_gfx_sfx_util.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "m4a.h"
+ #include "task.h"
+@@ -387,6 +388,13 @@
+     }
+     otId = GetMonData(mon, MON_DATA_OT_ID);
+     position = GetBattlerPosition(battlerId);
++    if (gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies == SPECIES_NONE
++     && Meta_Load(mon, gMonSpritesGfxPtr->sprites[position], FALSE, OBJ_PLTT_ID(battlerId)))
++    {
++        const struct MetaAsset *asset = Meta_Find(monsPersonality, otId);
++        LoadPalette(asset->data + 0x1000, BG_PLTT_ID(8) + BG_PLTT_ID(battlerId), PLTT_SIZE_4BPP);
++        return;
++    }
+     if (ShouldIgnoreDeoxysForm(DEOXYS_CHECK_BATTLE_SPRITE, battlerId) == TRUE || gBattleSpritesDataPtr->battlerData[battlerId].transformSpecies != SPECIES_NONE)
+         HandleLoadSpecialPokePic_DontHandleDeoxys(&gMonBackPicTable[species],
+                                                   gMonSpritesGfxPtr->sprites[position],
+--- a/src/trainer_pokemon_sprites.c
++++ b/src/trainer_pokemon_sprites.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "decompress.h"
+ #include "data.h"
+@@ -10,6 +11,8 @@
+     u16 paletteTag;
+     u8 spriteId;
+     u8 active;
++    u32 personality, otId;
++    bool8 isFrontPic, isTrainer;
+ };
+ 
+ #define PICS_COUNT 8
+@@ -151,6 +154,8 @@
+         // debug trap?
+         return 0xFFFF;
+     }
++    if (!isTrainer)
++        Meta_LoadPic(personality, otId, framePics, isFrontPic);
+     for (j = 0; j < 4; j ++)
+     {
+         images[j].data = framePics + 0x800 * j;
+@@ -171,6 +176,11 @@
+     sSpritePics[i].paletteTag = paletteTag;
+     sSpritePics[i].spriteId = spriteId;
+     sSpritePics[i].active = TRUE;
++    sSpritePics[i].personality = personality;
++    sSpritePics[i].otId = otId;
++    sSpritePics[i].isFrontPic = isFrontPic;
++    sSpritePics[i].isTrainer = isTrainer;
++    Meta_RefreshPicSprites();
+     return spriteId;
+ }
+ 
+@@ -284,3 +294,24 @@
+     }
+     return gender;
+ }
++
++void Meta_RefreshPicSprites(void)
++{
++    u8 i;
++    const struct MetaAsset *asset;
++    struct Sprite *sprite;
++    for (i = 0; i < PICS_COUNT; i++)
++    {
++        if (!sSpritePics[i].active || sSpritePics[i].isTrainer || sSpritePics[i].spriteId >= MAX_SPRITES)
++            continue;
++        sprite = &gSprites[sSpritePics[i].spriteId];
++        if (!sprite->inUse || sprite->images != sSpritePics[i].images)
++            continue;
++        asset = Meta_Find(sSpritePics[i].personality, sSpritePics[i].otId);
++        if (asset == NULL)
++            continue;
++        Meta_LoadPic(sSpritePics[i].personality, sSpritePics[i].otId, sSpritePics[i].frames, sSpritePics[i].isFrontPic);
++        LoadPalette(asset->data + 0x1000, OBJ_PLTT_ID(sprite->oam.paletteNum), 32);
++        RequestSpriteCopy(sSpritePics[i].frames, (u8 *)(OBJ_VRAM0 + sprite->oam.tileNum * 32), 0x800);
++    }
++}
+--- a/src/evolution_scene.c
++++ b/src/evolution_scene.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "battle.h"
+ #include "battle_message.h"
+@@ -49,6 +50,7 @@
+ #define sEvoGraphicsTaskId      gBattleCommunication[2]
+ 
+ // this file's functions
++static const u8 sMetaGrowthText[] = _("Metamorphosis continues!\nHold B to pause this growth.");
+ static void Task_EvolutionScene(u8 taskId);
+ static void Task_TradeEvolutionScene(u8 taskId);
+ static void CB2_EvolutionSceneUpdate(void);
+@@ -265,6 +267,7 @@
+                              currSpecies);
+     pokePal = GetMonSpritePalStructFromOtIdPersonality(currSpecies, trainerId, personality);
+     LoadCompressedPalette(pokePal->data, OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
++    Meta_Load(mon, gMonSpritesGfxPtr->sprites[B_POSITION_OPPONENT_LEFT], TRUE, OBJ_PLTT_ID(1));
+ 
+     SetMultiuseSpriteTemplateToPokemon(currSpecies, B_POSITION_OPPONENT_LEFT);
+     gMultiuseSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
+@@ -675,16 +678,30 @@
+     case EVOSTATE_INTRO_MSG:
+         if (!gPaletteFade.active)
+         {
+-            StringExpandPlaceholders(gStringVar4, gText_PkmnIsEvolving);
++            StringExpandPlaceholders(gStringVar4, sMetaGrowthText);
+             BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
++            sEvoStructPtr->delayTimer = 90;
+             gTasks[taskId].tState++;
+         }
+         break;
+     case EVOSTATE_INTRO_MON_ANIM:
+         if (!IsTextPrinterActive(0))
+         {
+-            PlayCry_Normal(gTasks[taskId].tPreEvoSpecies, 0);
+-            gTasks[taskId].tState++;
++            if ((gMain.heldKeys & B_BUTTON) && (gTasks[taskId].tBits & TASK_BIT_CAN_STOP))
++            {
++                gTasks[taskId].tEvoWasStopped = TRUE;
++                gTasks[taskId].tState = EVOSTATE_TRY_LEARN_MOVE;
++            }
++            else if (--sEvoStructPtr->delayTimer == 0)
++            {
++                if (!IsNationalPokedexEnabled() && gTasks[taskId].tPostEvoSpecies > SPECIES_MEW)
++                {
++                    gTasks[taskId].tEvoWasStopped = TRUE;
++                    gTasks[taskId].tState = EVOSTATE_TRY_LEARN_MOVE;
++                }
++                else
++                    gTasks[taskId].tState = EVOSTATE_SET_MON_EVOLVED;
++            }
+         }
+         break;
+     case EVOSTATE_INTRO_SOUND:
+@@ -772,7 +789,7 @@
+     case EVOSTATE_SET_MON_EVOLVED:
+         if (IsCryFinished())
+         {
+-            StringExpandPlaceholders(gStringVar4, gText_CongratsPkmnEvolved);
++            StringExpandPlaceholders(gStringVar4, sMetaGrowthText);
+             BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
+             PlayBGM(MUS_EVOLVED);
+             gTasks[taskId].tState++;
+@@ -782,6 +799,7 @@
+             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_SEEN);
+             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_CAUGHT);
+             IncrementGameStat(GAME_STAT_EVOLVED_POKEMON);
++            Meta_Record(mon, 3, 0, 3);
+         }
+         break;
+     case EVOSTATE_TRY_LEARN_MOVE:
+@@ -1206,7 +1224,7 @@
+     case T_EVOSTATE_SET_MON_EVOLVED:
+         if (IsCryFinished())
+         {
+-            StringExpandPlaceholders(gStringVar4, gText_CongratsPkmnEvolved);
++            StringExpandPlaceholders(gStringVar4, sMetaGrowthText);
+             DrawTextOnTradeWindow(0, gStringVar4, 1);
+             PlayFanfare(MUS_EVOLVED);
+             gTasks[taskId].tState++;
+@@ -1216,6 +1234,7 @@
+             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_SEEN);
+             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_CAUGHT);
+             IncrementGameStat(GAME_STAT_EVOLVED_POKEMON);
++            Meta_Record(mon, 3, 0, 3);
+         }
+         break;
+     case T_EVOSTATE_TRY_LEARN_MOVE:
+--- a/src/pokemon_summary_screen.c
++++ b/src/pokemon_summary_screen.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "pokemon.h"
+ #include "pokemon_summary_screen.h"
+@@ -2989,6 +2990,7 @@
+ 
+     sLastViewedMonIndex = GetLastViewedMonIndex();
+ 
++    gMetaBridge.display.valid = FALSE;
+     FREE_AND_SET_NULL_IF_SET(sMonSummaryScreen);
+     FREE_AND_SET_NULL_IF_SET(sMonSkillsPrinterXpos);
+ }
+@@ -4012,6 +4014,11 @@
+     u32 trainerId;
+ 
+     sMonPicBounceState = AllocZeroed(sizeof(struct MonPicBounceState));
++    gMetaBridge.display.personality = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_PERSONALITY);
++    gMetaBridge.display.otId = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_OT_ID);
++    gMetaBridge.display.species = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES);
++    gMetaBridge.display.level = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_LEVEL);
++    gMetaBridge.display.valid = !GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_IS_EGG);
+ 
+     species = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES_OR_EGG);
+     personality = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_PERSONALITY);
+--- a/src/pokemon_storage_system_tasks.c
++++ b/src/pokemon_storage_system_tasks.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "data.h"
+ #include "decompress.h"
+@@ -2104,6 +2105,7 @@
+ {
+     TilemapUtil_Free();
+     MultiMove_Free();
++    gMetaBridge.display.valid = FALSE;
+     FREE_AND_SET_NULL(gStorage);
+     FreeAllWindowBuffers();
+ }
+@@ -2279,6 +2281,7 @@
+         CpuCopy32(gStorage->tileBuffer, gStorage->displayMonTilePtr, 0x800);
+         LoadPalette(gStorage->displayMonPalBuffer, gStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
+         gStorage->displayMonSprite->invisible = FALSE;
++        Meta_RefreshStorage();
+     }
+     else
+         gStorage->displayMonSprite->invisible = TRUE;
+@@ -2768,3 +2771,17 @@
+         VarSet(VAR_PC_BOX_TO_SEND_MON, StorageGetCurrentBox());
+     }
+ }
++
++void Meta_RefreshStorage(void)
++{
++    const struct MetaAsset *asset;
++    if (gStorage == NULL || !gMetaBridge.display.valid || gStorage->displayMonSprite == NULL
++     || gStorage->displayMonIsEgg || gStorage->displayMonSpecies == SPECIES_NONE)
++        return;
++    asset = Meta_Find(gMetaBridge.display.personality, gMetaBridge.display.otId);
++    if (asset == NULL)
++        return;
++    memcpy(gStorage->tileBuffer, asset->data, 0x800);
++    CpuCopy32(gStorage->tileBuffer, gStorage->displayMonTilePtr, 0x800);
++    LoadPalette(asset->data + 0x1000, gStorage->displayMonPalOffset, 32);
++}
+--- a/src/pokemon_storage_system_data.c
++++ b/src/pokemon_storage_system_data.c
+@@ -1,4 +1,5 @@
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "data.h"
+ #include "item.h"
+@@ -1024,6 +1025,7 @@
+     u16 gender;
+     bool8 sanityIsBagEgg;
+ 
++    gMetaBridge.display.valid = FALSE;
+     gStorage->displayMonItemId = ITEM_NONE;
+     gender = MON_MALE;
+     sanityIsBagEgg = FALSE;
+@@ -1046,6 +1048,11 @@
+             gStorage->displayMonMarkings = GetMonData(mon, MON_DATA_MARKINGS);
+             gStorage->displayMonPersonality = GetMonData(mon, MON_DATA_PERSONALITY);
+             gStorage->displayMonPalette = GetMonFrontSpritePal(mon);
++            gMetaBridge.display.personality = gStorage->displayMonPersonality;
++            gMetaBridge.display.otId = GetMonData(mon, MON_DATA_OT_ID);
++            gMetaBridge.display.species = gStorage->displayMonSpecies;
++            gMetaBridge.display.level = gStorage->displayMonLevel;
++            gMetaBridge.display.valid = !gStorage->displayMonIsEgg;
+             gender = GetMonGender(mon);
+             gStorage->displayMonItemId = GetMonData(mon, MON_DATA_HELD_ITEM);
+         }
+@@ -1070,6 +1077,11 @@
+             gStorage->displayMonMarkings = GetBoxMonData(boxMon, MON_DATA_MARKINGS);
+             gStorage->displayMonPersonality = GetBoxMonData(boxMon, MON_DATA_PERSONALITY);
+             gStorage->displayMonPalette = GetMonSpritePalFromSpeciesAndPersonality(gStorage->displayMonSpecies, otId, gStorage->displayMonPersonality);
++            gMetaBridge.display.personality = gStorage->displayMonPersonality;
++            gMetaBridge.display.otId = otId;
++            gMetaBridge.display.species = gStorage->displayMonSpecies;
++            gMetaBridge.display.level = gStorage->displayMonLevel;
++            gMetaBridge.display.valid = !gStorage->displayMonIsEgg;
+             gender = GetGenderFromSpeciesAndPersonality(gStorage->displayMonSpecies, gStorage->displayMonPersonality);
+             gStorage->displayMonItemId = GetBoxMonData(boxMon, MON_DATA_HELD_ITEM);
+         }
+--- a/src/pokemon.c
++++ b/src/pokemon.c
+@@ -1,6 +1,7 @@
+ #define IS_POKEMON_C
+ 
+ #include "global.h"
++#include "metamorphosis.h"
+ #include "gflib.h"
+ #include "random.h"
+ #include "text.h"
+@@ -4068,6 +4069,9 @@
+     {
+         itemEffect = gItemEffectTable[item - ITEM_POTION];
+     }
++    if ((itemEffect[4] & (ITEM4_EV_HP | ITEM4_EV_ATK))
++     || (itemEffect[5] & (ITEM5_EV_DEF | ITEM5_EV_SPEED | ITEM5_EV_SPDEF | ITEM5_EV_SPATK)))
++        return TRUE; // No effect: essence is the only EV source.
+ 
+     // Do item effect
+     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
+@@ -4596,6 +4600,9 @@
+     {
+         itemEffect = gItemEffectTable[item - ITEM_POTION];
+     }
++    if ((itemEffect[4] & (ITEM4_EV_HP | ITEM4_EV_ATK))
++     || (itemEffect[5] & (ITEM5_EV_DEF | ITEM5_EV_SPEED | ITEM5_EV_SPDEF | ITEM5_EV_SPATK)))
++        return TRUE; // No effect: essence is the only EV source.
+ 
+     for (cmdIndex = 0; cmdIndex < ITEM_EFFECT_ARG_START; cmdIndex++)
+     {
+@@ -5511,87 +5518,7 @@
+ 
+ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
+ {
+-    u8 evs[NUM_STATS];
+-    u16 evIncrease = 0;
+-    u16 totalEVs = 0;
+-    u16 heldItem;
+-    u8 holdEffect;
+-    int i;
+-
+-    for (i = 0; i < NUM_STATS; i++)
+-    {
+-        evs[i] = GetMonData(mon, MON_DATA_HP_EV + i, NULL);
+-        totalEVs += evs[i];
+-    }
+-
+-    for (i = 0; i < NUM_STATS; i++)
+-    {
+-        u8 hasHadPokerus;
+-        int multiplier;
+-
+-        if (totalEVs >= MAX_TOTAL_EVS)
+-            break;
+-
+-        hasHadPokerus = CheckPartyHasHadPokerus(mon, 0);
+-
+-        if (hasHadPokerus)
+-            multiplier = 2;
+-        else
+-            multiplier = 1;
+-
+-        switch (i)
+-        {
+-        case STAT_HP:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_HP * multiplier;
+-            break;
+-        case STAT_ATK:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Attack * multiplier;
+-            break;
+-        case STAT_DEF:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Defense * multiplier;
+-            break;
+-        case STAT_SPEED:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Speed * multiplier;
+-            break;
+-        case STAT_SPATK:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_SpAttack * multiplier;
+-            break;
+-        case STAT_SPDEF:
+-            evIncrease = gSpeciesInfo[defeatedSpecies].evYield_SpDefense * multiplier;
+-            break;
+-        }
+-
+-        heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
+-
+-        if (heldItem == ITEM_ENIGMA_BERRY)
+-        {
+-            if (gMain.inBattle)
+-                holdEffect = gEnigmaBerries[0].holdEffect;
+-            else
+-                holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
+-        }
+-        else
+-        {
+-            holdEffect = ItemId_GetHoldEffect(heldItem);
+-        }
+-
+-        if (holdEffect == HOLD_EFFECT_MACHO_BRACE)
+-            evIncrease *= 2;
+-
+-        if (totalEVs + (s16)evIncrease > MAX_TOTAL_EVS)
+-            evIncrease = ((s16)evIncrease + MAX_TOTAL_EVS) - (totalEVs + evIncrease);
+-
+-        if (evs[i] + (s16)evIncrease > MAX_PER_STAT_EVS)
+-        {
+-            int val1 = (s16)evIncrease + MAX_PER_STAT_EVS;
+-            int val2 = evs[i] + evIncrease;
+-            evIncrease = val1 - val2;
+-        }
+-
+-        evs[i] += evIncrease;
+-        totalEVs += evIncrease;
+-        SetMonData(mon, MON_DATA_HP_EV + i, &evs[i]);
+-    }
++    // Banked by Meta_Defeat. Only confirmed essence spending grants EVs.
+ }
+ 
+ u16 GetMonEVCount(struct Pokemon *mon)
+--- a/include/malloc.h
++++ b/include/malloc.h
+@@ -3,7 +3,7 @@
+ 
+ #include "global.h"
+ 
+-#define HEAP_SIZE 0x1C000
++#define HEAP_SIZE 0x1B000 // Reserve 4 KiB; sprite payloads live in emulator-patched ROM banks.
+ #define malloc Alloc
+ #define calloc(ct, sz) AllocZeroed((ct) * (sz))
+ #define free Free
+--- a/ld_script.ld
++++ b/ld_script.ld
+@@ -15,7 +15,7 @@
+     {
+         gHeap = .;
+ 
+-        . = 0x1C000;
++        . = 0x1B000;
+ 
+         INCLUDE "sym_ewram.ld"
+         src/*.o(ewram_data);
+@@ -54,6 +54,8 @@
+         src/rom_header_gf.o(.text*);
+         src/crt0.o(.text);
+         src/main.o(.text);
++        src/metamorphosis.o(.text);
++        src/metamorphosis_menu.o(.text);
+         src/gpu_regs.o(.text);
+         src/dma3_manager.o(.text);
+         src/bg.o(.text);
+--- a/src/data/party_menu.h
++++ b/src/data/party_menu.h
+@@ -1049,8 +1049,11 @@
+     CURSOR_OPTION_REGISTER,
+     CURSOR_OPTION_TRADE1,
+     CURSOR_OPTION_TRADE2,
++    CURSOR_OPTION_METAMORPHOSIS,
+     CURSOR_OPTION_FIELD_MOVES,
+ };
++
++static const u8 sMetamorphosisLabel[] = _("METAMORPHOSIS");
+ 
+ static struct
+ {
+@@ -1058,6 +1061,7 @@
+     TaskFunc func;
+ } const sCursorOptions[] =
+ {
++    [CURSOR_OPTION_METAMORPHOSIS] = {sMetamorphosisLabel, CursorCB_Metamorphosis},
+     [CURSOR_OPTION_SUMMARY]                              = {gText_Summary5,               CursorCB_Summary  },
+     [CURSOR_OPTION_SWITCH]                               = {gText_Switch2,                CursorCB_Switch   },
+     [CURSOR_OPTION_CANCEL1]                              = {gFameCheckerText_Cancel,      CursorCB_Cancel1  },
+--- /dev/null
++++ b/include/metamorphosis.h
+@@ -0,0 +1,79 @@
++#ifndef GUARD_METAMORPHOSIS_H
++#define GUARD_METAMORPHOSIS_H
++
++#include "global.h"
++#include "pokemon.h"
++
++#define META_MAGIC 0x4D41544D
++#define META_VERSION 6
++#define META_ESSENCE_MULTIPLIER 3
++#define META_EVENTS 128
++#define META_CACHE 2
++#define META_BANKS 3
++#define META_BYTES 4128
++#define META_BUILD 0xC75F3521
++
++struct MetaCheckpoint {
++    u32 magic, campaignLo, campaignHi, headLo, headHi, sequence, flags, reserved;
++};
++
++struct MetaEvent {
++    u32 sequence, parentLo, parentHi, headLo, headHi, personality, otId;
++    u16 species, donor;
++    u8 level, kind, reason, reserved;
++};
++
++struct MetaIdentity {
++    u32 personality, otId;
++    u16 species;
++    u8 level, valid;
++};
++
++struct MetaAsset {
++    u32 valid, personality, otId;
++    u16 species;
++    u8 level, reserved;
++    u32 assetId;
++    u8 data[META_BYTES];
++};
++
++struct MetaSlot {
++    u32 bank, assetId;
++};
++
++struct __attribute__((packed)) MetaEssenceRow { u16 species, available, used; };
++struct MetaMenuBridge {
++    u32 requestId, status;
++    struct MetaIdentity mon;
++    u16 offset, total, count, reserved;
++    struct MetaEssenceRow rows[8];
++    u32 artStatus, artId;
++};
++
++struct MetaBridge {
++    u32 magic, version, build, checkpoint;
++    u32 write, read, overflow, heartbeat;
++    u32 incomingReady, incomingSlot, incomingChecksum, cacheEpoch;
++    struct MetaIdentity party[6];
++    struct MetaIdentity display;
++    struct MetaEvent events[META_EVENTS];
++    struct MetaSlot cache[META_CACHE];
++    u32 incomingBank;
++    struct MetaMenuBridge menu;
++};
++
++extern struct MetaBridge gMetaBridge;
++extern volatile const struct MetaAsset gMetaAssetBanks[META_BANKS];
++bool8 Meta_Tick(void);
++void Meta_Record(struct Pokemon *mon, u8 kind, u16 donor, u8 reason);
++void Meta_Defeat(u8 battler, u8 participants);
++const struct MetaAsset *Meta_Find(u32 personality, u32 otId);
++bool8 Meta_Load(struct Pokemon *mon, void *dest, bool8 front, u16 paletteOffset);
++bool8 Meta_LoadPic(u32 personality, u32 otId, void *dest, bool8 front);
++void Meta_RefreshPicSprites(void);
++void Meta_RefreshStorage(void);
++void Meta_EnsureEVs(struct Pokemon *mon);
++u8 Meta_EssenceYield(u16 species, u8 stat);
++void Meta_OpenEssenceMenu(u8 slot, void (*returnCallback)(void));
++
++#endif
+--- /dev/null
++++ b/src/metamorphosis.c
+@@ -0,0 +1,289 @@
++#include "global.h"
++#include "gflib.h"
++#include "metamorphosis.h"
++#include "battle.h"
++#include "battle_anim.h"
++#include "battle_controllers.h"
++#include "battle_interface.h"
++#include "constants/battle.h"
++#include "constants/species.h"
++
++EWRAM_DATA struct MetaBridge gMetaBridge = {0};
++/* The emulator patches an inactive ROM bank. The cartridge CPU only reads it.
++ * Volatile prevents the compiler folding the initially empty bank contents. */
++__attribute__((section(".rodata"))) volatile const struct MetaAsset gMetaAssetBanks[META_BANKS] = {{0}};
++static EWRAM_DATA bool8 sRefreshPending = FALSE;
++
++STATIC_ASSERT(sizeof(struct MetaCheckpoint) == 32, MetaCheckpointSize);
++STATIC_ASSERT(sizeof(struct MetaEvent) == 36, MetaEventSize);
++STATIC_ASSERT(sizeof(struct MetaIdentity) == 12, MetaIdentitySize);
++STATIC_ASSERT(sizeof(struct MetaAsset) == 4148, MetaAssetSize);
++STATIC_ASSERT(sizeof(struct MetaMenuBridge) == 84, MetaMenuBridgeSize);
++STATIC_ASSERT(sizeof(struct MetaEssenceRow) == 6, MetaEssenceRowSize);
++
++/* BoxPokemon.unknown is an unused, saved header word. The structure size and
++ * secure checksum layout stay unchanged. This marker prevents repeated EV
++ * migration on withdrawal, reload or a later menu visit. */
++void Meta_EnsureEVs(struct Pokemon *mon)
++{
++    u8 i, zero = 0;
++    if (mon->box.unknown == 0x4D46 || GetMonData(mon, MON_DATA_IS_EGG)
++     || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE)
++        return;
++    if (mon->box.unknown == 0x4D45)
++    {
++        /* Return legacy applied essence to its bank before adopting 3x yields.
++         * A full queue must retry later without changing the saved marker. */
++        if (gMetaBridge.write - gMetaBridge.read >= META_EVENTS)
++            return;
++        Meta_Record(mon, 8, 0, META_ESSENCE_MULTIPLIER);
++    }
++    for (i = 0; i < NUM_STATS; i++)
++        SetMonData(mon, MON_DATA_HP_EV + i, &zero);
++    mon->box.unknown = 0x4D46;
++    CalculateMonStats(mon);
++}
++
++u8 Meta_EssenceYield(u16 species, u8 stat)
++{
++    switch (stat)
++    {
++    case STAT_HP: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_HP;
++    case STAT_ATK: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_Attack;
++    case STAT_DEF: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_Defense;
++    case STAT_SPEED: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_Speed;
++    case STAT_SPATK: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_SpAttack;
++    case STAT_SPDEF: return META_ESSENCE_MULTIPLIER * gSpeciesInfo[species].evYield_SpDefense;
++    }
++    return 0;
++}
++
++static struct MetaCheckpoint *Checkpoint(void)
++{
++    return (struct MetaCheckpoint *)gSaveBlock2Ptr->filler_B20;
++}
++
++static u32 Hash(const void *data, u32 size, u32 seed)
++{
++    const u8 *bytes = data;
++    while (size--)
++        seed = (seed ^ *bytes++) * 16777619;
++    return seed;
++}
++
++static void Identity(struct MetaIdentity *out, struct Pokemon *mon)
++{
++    out->personality = GetMonData(mon, MON_DATA_PERSONALITY);
++    out->otId = GetMonData(mon, MON_DATA_OT_ID);
++    out->species = GetMonData(mon, MON_DATA_SPECIES);
++    out->level = GetMonData(mon, MON_DATA_LEVEL);
++    out->valid = out->species != SPECIES_NONE && !GetMonData(mon, MON_DATA_IS_EGG);
++}
++
++void Meta_Record(struct Pokemon *mon, u8 kind, u16 donor, u8 reason)
++{
++    struct MetaCheckpoint *cp = Checkpoint();
++    struct MetaEvent *event;
++    u8 payload[20];
++    u32 sequence;
++    if (GetMonData(mon, MON_DATA_IS_EGG) || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE)
++        return;
++    if (gMetaBridge.write - gMetaBridge.read >= META_EVENTS)
++    {
++        gMetaBridge.overflow = 1;
++        return;
++    }
++    sequence = cp->sequence + 1;
++    event = &gMetaBridge.events[gMetaBridge.write % META_EVENTS];
++    event->sequence = sequence;
++    event->parentLo = cp->headLo;
++    event->parentHi = cp->headHi;
++    event->personality = GetMonData(mon, MON_DATA_PERSONALITY);
++    event->otId = GetMonData(mon, MON_DATA_OT_ID);
++    event->species = GetMonData(mon, MON_DATA_SPECIES);
++    event->donor = donor;
++    event->level = GetMonData(mon, MON_DATA_LEVEL);
++    event->kind = kind;
++    event->reason = reason;
++    event->reserved = 0;
++    memcpy(payload, &sequence, 4);
++    memcpy(payload + 4, &event->personality, 16);
++    event->headLo = Hash(payload, 20, cp->headLo ^ 2166136261u);
++    event->headHi = Hash(payload, 20, cp->headHi ^ 0x9E3779B9);
++    cp->headLo = event->headLo;
++    cp->headHi = event->headHi;
++    cp->sequence = sequence;
++    gMetaBridge.write++;
++}
++
++void Meta_Defeat(u8 battler, u8 participants)
++{
++    u8 i;
++    u16 donor;
++    if (gBattleTypeFlags & BATTLE_TYPE_POKEDUDE)
++        return;
++    donor = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
++    for (i = 0; i < PARTY_SIZE; i++)
++        if ((participants & (1 << i)) && GetMonData(&gPlayerParty[i], MON_DATA_HP))
++            Meta_Record(&gPlayerParty[i], 1, donor, 0);
++}
++
++const struct MetaAsset *Meta_Find(u32 personality, u32 otId)
++{
++    u8 i, bank;
++    for (i = 0; i < META_CACHE; i++)
++    {
++        bank = gMetaBridge.cache[i].bank;
++        if (!bank || bank > META_BANKS)
++            continue;
++        bank--;
++        if (gMetaAssetBanks[bank].valid == META_MAGIC
++         && gMetaAssetBanks[bank].assetId == gMetaBridge.cache[i].assetId
++         && gMetaAssetBanks[bank].personality == personality
++         && gMetaAssetBanks[bank].otId == otId)
++            return (const struct MetaAsset *)&gMetaAssetBanks[bank];
++    }
++    return NULL;
++}
++
++bool8 Meta_LoadPic(u32 personality, u32 otId, void *dest, bool8 front)
++{
++    const struct MetaAsset *asset = Meta_Find(personality, otId);
++    u8 i;
++    if (asset == NULL)
++        return FALSE;
++    for (i = 0; i < 4; i++)
++        memcpy((u8 *)dest + i * 0x800, asset->data + (front ? 0 : 0x800), 0x800);
++    return TRUE;
++}
++
++bool8 Meta_Load(struct Pokemon *mon, void *dest, bool8 front, u16 paletteOffset)
++{
++    const struct MetaAsset *asset;
++    u8 i;
++    if (GetMonData(mon, MON_DATA_IS_EGG))
++        return FALSE;
++    asset = Meta_Find(GetMonData(mon, MON_DATA_PERSONALITY), GetMonData(mon, MON_DATA_OT_ID));
++    if (asset == NULL)
++        return FALSE;
++    for (i = 0; i < 4; i++)
++        memcpy((u8 *)dest + i * 0x800, asset->data + (front ? 0 : 0x800), 0x800);
++    LoadPalette(asset->data + 0x1000, paletteOffset, 32);
++    return TRUE;
++}
++
++static bool8 RefreshBattle(void)
++{
++    u8 battler;
++    bool8 complete = TRUE;
++    struct Pokemon *mon;
++    struct Sprite *sprite;
++    const struct MetaAsset *asset;
++    void *buffer;
++    if (!gMain.inBattle)
++        return TRUE;
++    if (gBattleSpritesDataPtr == NULL || gMonSpritesGfxPtr == NULL
++     || gBattleControllerExecFlags || gPaletteFade.active)
++        return FALSE;
++    for (battler = 0; battler < gBattlersCount; battler++)
++    {
++        if (GetBattlerSide(battler) != B_SIDE_PLAYER || gAbsentBattlerFlags & (1 << battler)
++         || gBattleSpritesDataPtr->battlerData[battler].transformSpecies != SPECIES_NONE
++         || gBattleMons[battler].status2 & STATUS2_SUBSTITUTE)
++            continue;
++        mon = &gPlayerParty[gBattlerPartyIndexes[battler]];
++        asset = Meta_Find(GetMonData(mon, MON_DATA_PERSONALITY), GetMonData(mon, MON_DATA_OT_ID));
++        if (asset == NULL || !GetMonData(mon, MON_DATA_HP))
++            continue;
++        /* Delivery can land between decompression and the send-out animation.
++         * Keep the refresh pending until the live player's sprite is visible;
++         * otherwise that battle retains its previously decompressed artwork. */
++        if (gBattlerSpriteIds[battler] >= MAX_SPRITES)
++        {
++            complete = FALSE;
++            continue;
++        }
++        sprite = &gSprites[gBattlerSpriteIds[battler]];
++        if (!sprite->inUse || sprite->invisible)
++        {
++            complete = FALSE;
++            continue;
++        }
++        buffer = gMonSpritesGfxPtr->sprites[GetBattlerPosition(battler)];
++        if (Meta_Load(mon, buffer, FALSE, OBJ_PLTT_ID(battler)))
++        {
++            LoadPalette(asset->data + 0x1000, BG_PLTT_ID(8) + BG_PLTT_ID(battler), 32);
++            RequestSpriteCopy(buffer, (u8 *)(OBJ_VRAM0 + sprite->oam.tileNum * 32), 0x800);
++        }
++    }
++    return complete;
++}
++
++bool8 Meta_Tick(void)
++{
++    struct MetaCheckpoint *cp;
++    const struct MetaAsset *incoming;
++    u8 i, active, bank;
++    if (gSaveBlock2Ptr == NULL)
++        return TRUE;
++    cp = Checkpoint();
++    if (gMetaBridge.magic != META_MAGIC)
++    {
++        gMetaBridge.magic = META_MAGIC;
++        gMetaBridge.version = META_VERSION;
++        gMetaBridge.build = META_BUILD;
++    }
++    gMetaBridge.checkpoint = (u32)cp;
++    if (cp->magic != META_MAGIC)
++    {
++        memset(cp, 0, sizeof(*cp));
++        cp->magic = META_MAGIC;
++        gMetaBridge.write = gMetaBridge.read = 0;
++        for (i = 0; i < META_CACHE; i++)
++            gMetaBridge.cache[i].bank = 0;
++    }
++    for (i = 0; i < PARTY_SIZE; i++)
++    {
++        Meta_EnsureEVs(&gPlayerParty[i]);
++        Identity(&gMetaBridge.party[i], &gPlayerParty[i]);
++    }
++    if (gMain.inBattle && gBattlersCount)
++    {
++        for (i = 0; i < PARTY_SIZE; i++)
++            gMetaBridge.party[i].valid = FALSE;
++        active = 0;
++        for (i = 0; i < gBattlersCount && active < META_CACHE; i++)
++            if (GetBattlerSide(i) == B_SIDE_PLAYER && !(gAbsentBattlerFlags & (1 << i)))
++                Identity(&gMetaBridge.party[active++], &gPlayerParty[gBattlerPartyIndexes[i]]);
++    }
++    if (gMetaBridge.heartbeat)
++        gMetaBridge.heartbeat--;
++    if (gMetaBridge.incomingReady && !gPaletteFade.active)
++    {
++        bank = gMetaBridge.incomingBank;
++        if (bank < META_BANKS && gMetaBridge.incomingSlot < META_CACHE)
++        {
++            incoming = (const struct MetaAsset *)&gMetaAssetBanks[bank];
++            if (gMetaAssetBanks[bank].valid == META_MAGIC
++             && Hash(incoming->data, META_BYTES, 2166136261u) == gMetaBridge.incomingChecksum)
++            {
++                gMetaBridge.cache[gMetaBridge.incomingSlot].bank = bank + 1;
++                gMetaBridge.cache[gMetaBridge.incomingSlot].assetId = gMetaAssetBanks[bank].assetId;
++                gMetaBridge.cacheEpoch++;
++                sRefreshPending = TRUE;
++            }
++        }
++        gMetaBridge.incomingReady = 0;
++    }
++    if (sRefreshPending && !gPaletteFade.active)
++    {
++        Meta_RefreshPicSprites();
++        Meta_RefreshStorage();
++        if (RefreshBattle())
++            sRefreshPending = FALSE;
++    }
++    /* All emitted history must reach durable storage before another game callback.
++     * A single Day Care callback can produce up to 99 events; the ring holds 128.
++     * This also prevents ordinary saves from getting ahead of their sidecar. */
++    return gMetaBridge.write == gMetaBridge.read && !gMetaBridge.overflow;
++}
+--- /dev/null
++++ b/src/metamorphosis_menu.c
+@@ -0,0 +1,305 @@
++#include "global.h"
++#include "gflib.h"
++#include "main.h"
++#include "task.h"
++#include "menu.h"
++#include "data.h"
++#include "metamorphosis.h"
++#include "constants/pokemon.h"
++#include "constants/species.h"
++#include "constants/songs.h"
++
++struct EssenceChoice { u16 species, available, add, used; };
++struct EssenceMenu {
++    struct EssenceChoice rows[NUM_SPECIES];
++    u16 total, loaded, cursor, commitIndex, evs[NUM_STATS];
++    u8 slot, stage, limited, commitPass, animation;
++    void (*returnCallback)(void);
++};
++static EWRAM_DATA struct EssenceMenu *sEssence = NULL;
++static const struct BgTemplate sEssenceBg[] = {{.bg=0, .charBaseIndex=0, .mapBaseIndex=31, .screenSize=0, .paletteMode=0, .priority=0}};
++static const struct WindowTemplate sEssenceWindows[] = {{.bg=0, .tilemapLeft=1, .tilemapTop=1, .width=28, .height=19, .paletteNum=0, .baseBlock=1}, DUMMY_WIN_TEMPLATE};
++static const u16 sEssencePalette[] = {RGB(4,8,10),RGB(28,30,27),RGB(3,7,10),RGB(20,23,21),RGB(31,31,31)};
++static const u8 sEssenceColors[] = {1,2,3};
++static const u8 sMaxTotal[] = _("/510");
++static const u8 sArrow[] = _(">");
++static const u8 sSlash[] = _("/");
++static const u8 sTitle[] = _("METAMORPHOSIS");
++static const u8 sLoading[] = _("Loading essence...\nKeep the companion connected.\n\nB: Return");
++static const u8 sUnavailable[] = _("Essence history unavailable.\nCheck the companion.\n\nB: Return");
++static const u8 sEmpty[] = _("No essence collected.\nDefeat Pokemon to collect some.\n\nB: Return");
++static const u8 sConfirm[] = _("Apply these essence changes?\nRemoved essence returns to your bank.\n\nA: Confirm    B: Keep editing");
++static const u8 sWorking[] = _("Applying metamorphosis...\nWaiting for history to be saved.");
++static const u8 sDone[] = _("New sprite loaded!\nCheck SUMMARY or the next battle.\n\nA or B: Return");
++static const u8 sGenerating[] = _("Shaping your Pokemon...\nThe companion is creating its sprite.\n\nA or B: Continue playing");
++static const u8 sFailed[] = _("Sprite generation failed.\nPrevious artwork kept. Check companion.\n\nA or B: Return");
++static const u8 sBelow[] = _("Essence and EVs updated.\nNormal sprite until 100 essence EVs.\n\nA or B: Return");
++static const u8 sWaiting[] = _("Waiting for the companion...\nKeep its Lua script connected.\n\nA or B: Continue playing");
++static const u8 sLimit[] = _("Stat or total EV limit reached.");
++static const u8 sControls[] = _("Left/Right: -/+1  L/R: -/+10");
++static const u8 sApply[] = _("START: Apply     B: Cancel");
++static const u8 sColumns[] = _("ESSENCE       USE / OWN");
++static const u8 sHP[] = _("HP ");
++static const u8 sAtk[] = _("ATK ");
++static const u8 sDef[] = _("DEF ");
++static const u8 sSpe[] = _("SPE ");
++static const u8 sSpa[] = _("SPA ");
++static const u8 sSpd[] = _("SPD ");
++static const u8 *const sStatLabels[] = {sHP,sAtk,sDef,sSpe,sSpa,sSpd};
++
++static void EssenceText(u8 x, u8 y, const u8 *text)
++{
++    AddTextPrinterParameterized3(0, FONT_SMALL, x, y, sEssenceColors, TEXT_SKIP_DRAW, text);
++}
++static void EssenceNumber(u8 x, u8 y, u16 n)
++{
++    u8 text[8];
++    ConvertIntToDecimalStringN(text,n,STR_CONV_MODE_LEFT_ALIGN,5);
++    EssenceText(x,y,text);
++}
++static u16 EssenceEVTotal(void)
++{
++    u8 i; u16 total=0;
++    for (i=0;i<NUM_STATS;i++) total+=sEssence->evs[i];
++    return total;
++}
++static void DrawEssence(void)
++{
++    u16 row,first; u8 i;
++    FillWindowPixelBuffer(0,PIXEL_FILL(1));
++    EssenceText(0,0,sTitle);
++    EssenceNumber(150,0,EssenceEVTotal());
++    EssenceText(176,0,sMaxTotal);
++    for (i=0;i<NUM_STATS;i++)
++    {
++        EssenceText((i%3)*74,14+(i/3)*12,sStatLabels[i]);
++        EssenceNumber((i%3)*74+28,14+(i/3)*12,sEssence->evs[i]);
++    }
++    if (sEssence->stage==0)
++        EssenceText(0,50,gMetaBridge.menu.status==3?sUnavailable:sLoading);
++    else if (sEssence->stage==2)
++        EssenceText(0,50,sConfirm);
++    else if (sEssence->stage==3)
++        EssenceText(0,50,sWorking);
++    else if (sEssence->stage==4)
++    {
++        const struct MetaAsset *asset=Meta_Find(GetMonData(&gPlayerParty[sEssence->slot],MON_DATA_PERSONALITY),GetMonData(&gPlayerParty[sEssence->slot],MON_DATA_OT_ID));
++        bool8 ready=gMetaBridge.menu.artStatus==3 && asset && asset->assetId==gMetaBridge.menu.artId;
++        if (ready) EssenceText(0,50,EssenceEVTotal()<100?sBelow:sDone);
++        else if (gMetaBridge.menu.artStatus==4) EssenceText(0,50,sFailed);
++        else
++        {
++            EssenceText(0,50,gMetaBridge.heartbeat?sGenerating:sWaiting);
++            FillWindowPixelRect(0,PIXEL_FILL(3),8,122,200,6);
++            FillWindowPixelRect(0,PIXEL_FILL(2),8+(sEssence->animation/8%10)*18,122,20,6);
++        }
++    }
++    else if (!sEssence->total)
++        EssenceText(0,50,sEmpty);
++    else
++    {
++        EssenceText(0,38,sColumns);
++        first=(sEssence->cursor/6)*6;
++        for (row=first;row<sEssence->total && row<first+6;row++)
++        {
++            u8 y=50+(row-first)*12;
++            if (row==sEssence->cursor) EssenceText(0,y,sArrow);
++            EssenceText(10,y,gSpeciesNames[sEssence->rows[row].species]);
++            EssenceNumber(106,y,sEssence->rows[row].add);
++            EssenceText(128,y,sSlash);
++            EssenceNumber(140,y,sEssence->rows[row].available);
++        }
++        EssenceText(0,124,sApply);
++        EssenceText(0,136,sEssence->limited?sLimit:sControls);
++    }
++    CopyWindowToVram(0,COPYWIN_FULL);
++}
++static void RequestEssencePage(void)
++{
++    struct Pokemon *mon=&gPlayerParty[sEssence->slot];
++    struct MetaMenuBridge *request=&gMetaBridge.menu;
++    request->requestId++;
++    request->mon.personality=GetMonData(mon,MON_DATA_PERSONALITY);
++    request->mon.otId=GetMonData(mon,MON_DATA_OT_ID);
++    request->mon.species=GetMonData(mon,MON_DATA_SPECIES);
++    request->mon.level=GetMonData(mon,MON_DATA_LEVEL);
++    request->mon.valid=TRUE;
++    request->offset=sEssence->loaded;
++    gMetaBridge.display=request->mon;
++    request->status=1;
++}
++static void CloseEssence(u8 taskId)
++{
++    void (*callback)(void)=sEssence->returnCallback;
++    gMetaBridge.menu.status=0;
++    gMetaBridge.menu.mon.valid=FALSE;
++    gMetaBridge.display.valid=FALSE;
++    SetVBlankCallback(NULL);
++    FreeAllWindowBuffers();
++    Free(sEssence);sEssence=NULL;
++    DestroyTask(taskId);
++    SetMainCallback2(callback);
++}
++static void ChangeEssence(s8 delta)
++{
++    struct EssenceChoice *choice=&sEssence->rows[sEssence->cursor];
++    u8 i,step,count=delta<0?-delta:delta;
++    sEssence->limited=FALSE;
++    for (step=0;step<count;step++)
++    {
++        if (delta<0)
++        {
++            if (!choice->add) break;
++            choice->add--;
++            for (i=0;i<NUM_STATS;i++) sEssence->evs[i]-=Meta_EssenceYield(choice->species,i);
++        }
++        else
++        {
++            u16 total=EssenceEVTotal();
++            if (choice->add>=choice->available || choice->add>=255) break;
++            for (i=0;i<NUM_STATS;i++)
++            {
++                u8 yield=Meta_EssenceYield(choice->species,i);
++                total+=yield;
++                if (sEssence->evs[i]+yield>MAX_PER_STAT_EVS) break;
++            }
++            if (i<NUM_STATS || total>MAX_TOTAL_EVS)
++            {
++                sEssence->limited=TRUE;
++                break;
++            }
++            choice->add++;
++            for (i=0;i<NUM_STATS;i++) sEssence->evs[i]+=Meta_EssenceYield(choice->species,i);
++        }
++    }
++    PlaySE(SE_SELECT);
++    DrawEssence();
++}
++static void Task_Essence(u8 taskId)
++{
++    struct Pokemon *mon=&gPlayerParty[sEssence->slot];
++    u16 i;
++    if (sEssence->stage==3)
++    {
++        /* One event per frame: Meta_Tick waits for its durable acknowledgement.
++         * A batch can contain all species without overflowing the event ring. */
++        /* Refunds precede additions, allowing swaps even at the EV cap. */
++        while (sEssence->commitPass<2)
++        {
++            while (sEssence->commitIndex<sEssence->total)
++            {
++                struct EssenceChoice *row=&sEssence->rows[sEssence->commitIndex++];
++                s16 change=row->add-row->used;
++                if ((sEssence->commitPass==0 && change<0) || (sEssence->commitPass==1 && change>0))
++                {
++                    Meta_Record(mon,change<0?7:4,row->species,change<0?-change:change);
++                    return;
++                }
++            }
++            sEssence->commitPass++;sEssence->commitIndex=0;
++        }
++        for (i=0;i<NUM_STATS;i++)
++        {
++            u8 ev=sEssence->evs[i];
++            SetMonData(mon,MON_DATA_HP_EV+i,&ev);
++        }
++        CalculateMonStats(mon);
++        Meta_Record(mon,5,0,0);
++        gMetaBridge.menu.artStatus=0;gMetaBridge.menu.artId=0;
++        sEssence->stage=4;
++        DrawEssence();
++        return;
++    }
++    if (sEssence->stage==4)
++    {
++        sEssence->animation++;
++        if (!(sEssence->animation%8)) DrawEssence();
++    }
++    if (JOY_NEW(B_BUTTON) || (sEssence->stage==4 && JOY_NEW(A_BUTTON)))
++    {
++        if (sEssence->stage==2) {sEssence->stage=1;DrawEssence();}
++        else CloseEssence(taskId);
++        return;
++    }
++    if (sEssence->stage==0)
++    {
++        struct MetaMenuBridge *response=&gMetaBridge.menu;
++        if (response->status==3) {DrawEssence();return;}
++        if (response->status!=2) return;
++        if (response->offset!=sEssence->loaded || response->total>NUM_SPECIES
++         || response->count>8 || sEssence->loaded+response->count>response->total
++         || (!response->count && sEssence->loaded<response->total))
++        {response->status=3;DrawEssence();return;}
++        sEssence->total=response->total;
++        for (i=0;i<response->count;i++)
++        {
++            struct MetaEssenceRow *row=&response->rows[i];
++            if (!row->species || row->species>=NUM_SPECIES) {response->status=3;DrawEssence();return;}
++            sEssence->rows[sEssence->loaded].species=row->species;
++            sEssence->rows[sEssence->loaded].used=row->used;
++            sEssence->rows[sEssence->loaded].add=row->used;
++            sEssence->rows[sEssence->loaded++].available=row->available;
++        }
++        if (sEssence->loaded<sEssence->total) RequestEssencePage();
++        else {response->status=0;sEssence->stage=1;DrawEssence();}
++        return;
++    }
++    if (sEssence->stage==2 && JOY_NEW(A_BUTTON))
++    {
++        Meta_Record(mon,6,0,META_ESSENCE_MULTIPLIER);
++        sEssence->stage=3;sEssence->commitIndex=0;sEssence->commitPass=0;DrawEssence();return;
++    }
++    if (sEssence->stage!=1 || !sEssence->total) return;
++    if (JOY_REPT(DPAD_UP))
++    {sEssence->cursor=(sEssence->cursor+sEssence->total-1)%sEssence->total;DrawEssence();}
++    else if (JOY_REPT(DPAD_DOWN))
++    {sEssence->cursor=(sEssence->cursor+1)%sEssence->total;DrawEssence();}
++    else if (JOY_REPT(DPAD_LEFT)) ChangeEssence(-1);
++    else if (JOY_REPT(DPAD_RIGHT) || JOY_NEW(A_BUTTON)) ChangeEssence(1);
++    else if (JOY_NEW(L_BUTTON)) ChangeEssence(-10);
++    else if (JOY_NEW(R_BUTTON)) ChangeEssence(10);
++    else if (JOY_NEW(START_BUTTON))
++    {
++        for (i=0;i<sEssence->total;i++) if (sEssence->rows[i].add!=sEssence->rows[i].used) break;
++        if (i<sEssence->total) {sEssence->stage=2;DrawEssence();}
++    }
++}
++static void EssenceVBlank(void)
++{
++    TransferPlttBuffer();
++}
++static void EssenceMain(void)
++{
++    RunTasks();
++    RunTextPrinters();
++    UpdatePaletteFade();
++}
++void Meta_OpenEssenceMenu(u8 slot, void (*returnCallback)(void))
++{
++    u8 i;
++    SetVBlankCallback(NULL);
++    SetGpuReg(REG_OFFSET_DISPCNT,0);
++    DmaClearLarge16(3,(void *)VRAM,VRAM_SIZE,0x1000);
++    ResetTasks();
++    ResetSpriteData();
++    ResetPaletteFade();
++    ResetBgsAndClearDma3BusyFlags(0);
++    InitBgsFromTemplates(0,sEssenceBg,1);
++    ChangeBgX(0,0,0);ChangeBgY(0,0,0);
++    if (!InitWindows(sEssenceWindows)) {FreeAllWindowBuffers();SetMainCallback2(returnCallback);return;}
++    DeactivateAllTextPrinters();
++    sEssence=AllocZeroed(sizeof(*sEssence));
++    if (sEssence==NULL) {FreeAllWindowBuffers();SetMainCallback2(returnCallback);return;}
++    sEssence->slot=slot;sEssence->returnCallback=returnCallback;
++    gMetaBridge.menu.artStatus=0;gMetaBridge.menu.artId=0;
++    Meta_EnsureEVs(&gPlayerParty[slot]);
++    for (i=0;i<NUM_STATS;i++) sEssence->evs[i]=GetMonData(&gPlayerParty[slot],MON_DATA_HP_EV+i);
++    LoadPalette(sEssencePalette,0,sizeof(sEssencePalette));
++    PutWindowTilemap(0);
++    DrawEssence();
++    RequestEssencePage();
++    CreateTask(Task_Essence,0);
++    ShowBg(0);
++    SetVBlankCallback(EssenceVBlank);
++    SetMainCallback2(EssenceMain);
++}

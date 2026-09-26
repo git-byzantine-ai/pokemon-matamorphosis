@@ -1,0 +1,22 @@
+{
+  "source": "rom/pokefirered",
+  "catalog": "build/catalog.json",
+  "database": "runtime/history.sqlite3",
+  "cache": "runtime/sprites",
+  "port": 8765,
+  "dashboard_port": 8766,
+  "generator": {
+    "provider": "local-sd",
+    "executable": ".tools/stable-diffusion/sd-cli.exe",
+    "model": ".tools/models/dreamshaper8.safetensors",
+    "model_revision": "228d79cb20811466f5c5710aa91f05dabd0b8a14",
+    "runtime_revision": "28b454b",
+    "backend": "te=cpu,diffusion=Vulkan1,vae=Vulkan1",
+    "conditioning": "sketch",
+    "view_mode": "reference",
+    "steps": 28,
+    "strength": 0.46,
+    "back_strength": 0.46,
+    "timeout_seconds": 600
+  }
+}

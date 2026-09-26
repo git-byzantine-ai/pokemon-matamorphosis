@@ -1,0 +1,1 @@
+"""FireRed gradual metamorphosis companion."""

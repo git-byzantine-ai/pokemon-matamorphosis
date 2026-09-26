@@ -1,0 +1,10 @@
+.tools/
+research/
+rom/pokefirered/
+build/
+runtime/
+__pycache__/
+*.pyc
+.venv/
+.env
+config.local.json
